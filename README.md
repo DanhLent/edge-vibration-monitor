@@ -52,7 +52,7 @@ The unavailable C stub and all JSON/REST definitions are in [interface contract]
 
 ## Verification and team work
 
-Local verification: 19 Python tests, including actual host-compiled firmware serialization/command
+Local verification: 25 Python tests, including actual host-compiled firmware serialization/command
 logic and real local MQTT transport with a software peer. C/C++ checks cover feature math, window
 boundaries, and the unavailable stub. ESP32 compilation and dashboard syntax/control checks also pass.
 These checks do not establish Wokwi execution, hardware accuracy, or trained-model parity.
@@ -75,3 +75,13 @@ The initial Git author records Danh's actual account; starter branches and onboa
 claim no Nhat/Dat contributions. Members must commit their real work through their own accounts,
 record assistance, and explain/modify their own code during oral assessment.
 See [AI log](docs/ai-log.md) and member records for provenance and verification limits.
+
+## Capture integration measurements
+
+The official Wokwi CLI capture runner builds unchanged firmware, observes MQTT, runs acknowledged
+mode commands, and exports cadence, command latency and received-payload CSVs from a fresh backend.
+See [capture and review instructions](docs/reporting.md#wokwi-cli-capture) for private token setup,
+bounded runs, public web-source verification and separate dashboard evidence. Outputs begin under
+ignored `artifacts/`; only reviewed synthetic evidence belongs in `deliverables/measurements/`.
+The tooling and its tests used AI assistance, adapting TH3 CLI/measurement patterns and TH4
+backend correlation. Firmware/model behavior is unchanged; runtime findings remain Dat follow-ups.

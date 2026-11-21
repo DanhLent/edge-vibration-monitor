@@ -1,5 +1,7 @@
 .venv/
 .tools/
+/.secrets/
+/.automation_profiles/
 __pycache__/
 *.py[cod]
 .pytest_cache/

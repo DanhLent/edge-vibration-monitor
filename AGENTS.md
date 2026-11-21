@@ -39,6 +39,7 @@ Read this file and STATE.md before working; update STATE.md after verified progr
 - When the user adds a coding/architecture rule or corrects an unreasonable habit
   not covered here, proactively suggest adding it to AGENTS.md.
 - Keep AGENTS.md concise and strictly under 60 lines.
+- Keep pre-onboarding teammate drafts local-only; follow docs/workflow.md.
 
 ## Progressive disclosure
 - Use docs/README.md to locate and read relevant specs before editing.

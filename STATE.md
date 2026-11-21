@@ -1,5 +1,5 @@
 # STATE — CE339 N06 / E2
-Updated: 2026-11-21
+Updated: 2026-11-22
 Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
@@ -68,6 +68,7 @@ Keep predictions unavailable until the official dataset and exported tree are va
 ## Member progress
 ### Danh — Backend/MQTT and integration
 - [x] Reviewed AI-assisted bootstrap is locally verified; provenance is in README and docs/ai/danh.md.
+- [x] Add unchanged-firmware Wokwi CLI capture and read-only CSV export; pass 25 tests and ESP32 compilation.
 - [ ] Add Nhat/Dat's verified GitHub handles and collaborators; activate reviewer pairs/required approval.
 - [ ] Capture backend/dashboard and traffic evidence; rehearse explanation/live modification.
 ### Nhat — ML/FFT
@@ -76,3 +77,12 @@ Keep predictions unavailable until the official dataset and exported tree are va
 ### Dat — Firmware/Wokwi
 - [ ] Supply verified GitHub handle and accept repository access.
 - [ ] Verify Wokwi timing/control and physical-kit behavior with measurements and evidence.
+
+## Danh integration tooling — 2026-11-22
+- [x] Audit TH3/TH4 automation without importing profiles, databases, credentials or old lab data.
+- [x] Add fresh-run backend/MQTT capture, exact received-byte accounting, cadence and successful ACK latency CSVs.
+- [x] Verify local-broker retry correlation, duplicate/retained handling, incomplete exports and separate clocks.
+- [x] Compile unchanged firmware: 1,026,419 bytes flash, 52,764 bytes static RAM; diagnosis remains unavailable.
+- [x] Document CLI/browser evidence separation and local-only teammate reference drafts; AGENTS.md remains under 60 lines.
+- [ ] Attempt saved-source Wokwi runtime and independent browser/dashboard evidence.
+- [ ] Open Danh's tooling PR and verify both required CI checks; leave manual merge to Danh.
