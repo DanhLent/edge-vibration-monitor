@@ -108,6 +108,7 @@ class MeasurementTests(unittest.TestCase):
         self.assertFalse((self.directory / "backend.db").exists())
         self.assertEqual(self.rows("sampling.csv"), [])
         self.assertEqual(self.rows("commands.csv"), [])
+        self.assertNotIn(b"\r", (self.directory / "measurements" / "sampling.csv").read_bytes())
 
     def test_public_url_and_command_validation(self):
         self.assertEqual(safe_url("https://wokwi.com/projects/123"), "https://wokwi.com/projects/123")

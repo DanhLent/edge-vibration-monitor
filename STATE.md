@@ -4,7 +4,7 @@ Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: reviewed bootstrap public and CI-verified; Wokwi runtime and official TH5 data pending.
+Current phase: Danh tooling verified; partial Wokwi CLI evidence captured, full runtime/browser gates and official TH5 data pending.
 
 ## Initialization
 - [x] Inspect all seven workbook sheets; isolate N06/E2 and applicable shared rules.
@@ -49,6 +49,8 @@ Current phase: reviewed bootstrap public and CI-verified; Wokwi runtime and offi
 ## Next action
 Run Wokwi and obtain official TH5 data; confirm its definitions before training.
 Keep predictions unavailable until the official dataset and exported tree are validated.
+Dat follow-up: investigate slow simulation/missed ticks and the five-minute CLI API connection limit;
+complete 60 device seconds per mode, ten commands and browser evidence without mixing firmware into Danh's PR.
 
 ## Reviewed bootstrap — 2026-11-21
 - [x] Fix window boundaries and immutable completion metadata; count missed timer notifications.
@@ -84,5 +86,13 @@ Keep predictions unavailable until the official dataset and exported tree are va
 - [x] Verify local-broker retry correlation, duplicate/retained handling, incomplete exports and separate clocks.
 - [x] Compile unchanged firmware: 1,026,419 bytes flash, 52,764 bytes static RAM; diagnosis remains unavailable.
 - [x] Document CLI/browser evidence separation and local-only teammate reference drafts; AGENTS.md remains under 60 lines.
-- [ ] Attempt saved-source Wokwi runtime and independent browser/dashboard evidence.
+- [x] Capture partial unchanged-build Wokwi CLI evidence: 37 normal windows, one successful command, 13,753 received payload bytes.
+- [ ] Complete 60 device seconds in all modes and ten commands; API disconnected after its five-minute tier limit.
+- [ ] Save/source-verify an E2 web link; in-app starter-file replacement stalled on a confirmation dialog.
+- [ ] Verify dashboard visually/control through the browser; the attempted URL refused connection after capture shutdown.
 - [ ] Open Danh's tooling PR and verify both required CI checks; leave manual merge to Danh.
+
+Partial run: deliverables/measurements/20261121T203825Z-0af0d6 (UTC ID; local date 2026-11-22).
+Measured rate 696.9847–1000.479 Hz; 36.017 s between stored completions; missed notifications rose to 331.
+Successful backend command latency 1931.258 ms. These are provisional synthetic integration measurements,
+not full-mode acceptance, wire traffic, reduction evidence, model validation or physical-kit results.

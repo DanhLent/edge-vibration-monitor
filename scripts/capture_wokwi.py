@@ -169,6 +169,8 @@ def capture(args):
     def wait(predicate, stage_deadline, label):
         while time.monotonic() < min(deadline, stage_deadline):
             if simulator and simulator.poll() is not None:
+                if "Connection timed out after 5 minutes" in (directory / "wokwi.log").read_text(errors="replace"):
+                    raise CaptureError("Wokwi API five-minute connection limit reached; runtime acceptance incomplete")
                 raise CaptureError("Wokwi stopped before runtime acceptance completed")
             if boot_id:
                 for event in observer.snapshot():

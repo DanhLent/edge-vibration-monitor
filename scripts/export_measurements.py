@@ -35,7 +35,7 @@ def write_json(path, value):
 
 def write_csv(path, fields, rows):
     with Path(path).open("w", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

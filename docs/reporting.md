@@ -66,6 +66,12 @@ Current live status must also match the applied mode. Command failures stop the 
 partial data. Exit 0 means `CAPTURED_PENDING_REVIEW`; exit 2 means `BLOCKED` or `INCOMPLETE`.
 Neither establishes visual review, diagnosis accuracy, or completed course acceptance.
 
+The 2026-11-22 reference run hit the token tier's five-minute API connection limit after only
+about 38 device-uptime seconds. Increasing `--wall-timeout` does not extend that service limit.
+The partial capture is evidence of transport/one ACK, not the complete three-mode/ten-command gate.
+Dat must investigate runtime throughput before selecting a later acquisition/runtime adjustment;
+Danh's tooling does not change firmware or upgrade a paid plan to bypass this constraint.
+
 The runner prints its localhost dashboard URL. Add `--dashboard-seconds 120` to keep capture open
 after the REST exercise for one separate dashboard command. Apply a different mode, wait for its
 ACK and new window, and capture live/control-complete screenshots. Inspect health, feature values,

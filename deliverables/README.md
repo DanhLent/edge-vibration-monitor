@@ -1,6 +1,9 @@
 # Submission evidence
 
-No validated submission evidence has been produced yet.
+Partial synthetic integration evidence is available in
+[20261121T203825Z-0af0d6](measurements/20261121T203825Z-0af0d6/README.md).
+It records unchanged-build Wokwi CLI telemetry and one successful command; full mode/control,
+public web-source and dashboard gates remain incomplete.
 
 Use `measurements/` for small CSVs, `reports/` for final PDFs, and `slides/` for presentation files.
 Keep generated scratch output and local databases under ignored `artifacts/`.

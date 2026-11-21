@@ -18,4 +18,7 @@
 - Verified: 25 Python tests, dashboard syntax/control checks, and unchanged ESP32 compilation (1,026,419 bytes flash; 52,764 bytes static RAM).
 - Scope: no firmware, model, wire/API contract or database-schema changes. Tests use an explicitly identified software peer and do not establish Wokwi or ESP32 model parity.
 - Runtime/browser outcomes and safe selected evidence are recorded separately in STATE.md and deliverables; unfinished gates remain explicit.
+- Runtime: unchanged local build produced 37 valid stored normal-mode windows and one done ACK (1931.258 ms backend latency). Wokwi API ended at the five-minute connection limit before the requested mode schedule completed.
+- Browser: support-file upload worked; replacement confirmation stalled. No E2 public saved-source link was verified. Dashboard navigation was attempted after capture shutdown and returned connection refused; visual/control evidence remains pending.
+- Evidence review: publish only validated synthetic CSVs and a sanitized manifest/summary; retain Serial, MQTT traces, database, browser draft and private token outside tracked outputs. No firmware fix or paid-plan upgrade was attempted.
 - Human understanding: Danh must review the capture lifecycle, byte/clock conventions, export joins and failure handling and rehearse a live modification.
