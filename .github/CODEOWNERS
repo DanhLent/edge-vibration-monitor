@@ -1,23 +1,29 @@
-# Bootstrap owner; require code-owner reviews only after reviewer pairs are configured.
+# Bootstrap owner; enable code-owner reviews after eligible reviewer pairs are configured.
+# TODO(team): add Nhat as a secondary default owner after accepting the invitation.
 * @DanhLent
-/backend/ @DanhLent
-/docs/ @DanhLent
-/.github/ @DanhLent
-/scripts/ @DanhLent
 
-# TODO(Nhat): add the verified GitHub handle, then activate ML ownership with a reviewer.
-# /ml/ <Nhat-handle> @DanhLent
-# /firmware/model.h <Nhat-handle> <Dat-handle>
-# /firmware/model.c <Nhat-handle> <Dat-handle>
-# /docs/ml.md <Nhat-handle> @DanhLent
-# /docs/ai/nhat.md <Nhat-handle> @DanhLent
+# TODO(team): activate governance reviewer pairs using verified handles.
+# /.github/ @DanhLent <Nhat-handle>
+# /scripts/ @DanhLent <Nhat-handle>
+# /docs/ @DanhLent <Nhat-handle>
 
-# TODO(Dat): add the verified GitHub handle, then activate firmware ownership with Nhat.
+# TODO(Dat): add the verified handle, then activate firmware ownership and backend review.
 # /firmware/ <Dat-handle> <Nhat-handle>
-# Place the model.h/model.c rules AFTER the firmware rule: the last matching rule wins.
 # /docs/hardware.md <Dat-handle> <Nhat-handle>
 # /docs/ai/dat.md <Dat-handle> <Nhat-handle>
 # /backend/ @DanhLent <Dat-handle>
+# /tests/test_backend.py @DanhLent <Dat-handle>
+# /tests/test_mqtt_integration.py @DanhLent <Dat-handle>
+# /tests/test_firmware.py <Dat-handle> <Nhat-handle>
+# /tests/features_test.cpp <Dat-handle> <Nhat-handle>
+# /tests/sampling_test.cpp <Dat-handle> <Nhat-handle>
+# /tests/protocol_test.cpp <Dat-handle> @DanhLent
 
-# TODO(team): assign the relevant tests to the same lead/reviewer pairs.
+# TODO(Nhat): add the verified handle; specific model rules follow the general firmware rule.
+# /ml/ <Nhat-handle> @DanhLent
+# /firmware/model.h <Nhat-handle> <Dat-handle>
+# /firmware/model.c <Nhat-handle> <Dat-handle>
+# /tests/model_test.c <Nhat-handle> <Dat-handle>
+# /docs/ml.md <Nhat-handle> @DanhLent
+# /docs/ai/nhat.md <Nhat-handle> @DanhLent
 # /docs/interfaces.md @DanhLent <Nhat-handle> <Dat-handle>

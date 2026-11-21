@@ -8,3 +8,4 @@
 - Verification: host C/C++ and local software-peer MQTT tests; compilation and dashboard checks. Exact current results are in STATE.md.
 - Limits: no Wokwi execution, trained model, actual ESP32/Python parity, evaluated FFT, or physical-kit evidence.
 - Human understanding: Danh must review and rehearse explanation/live changes; AI-produced code is not evidence of completed oral assessment.
+- Git verification: initial commit 84e4b16, public clone exclusions, successful GitHub CI, main protection, and empty starter branches. Supported action runtimes are checked through the final bootstrap PR.
