@@ -4,7 +4,7 @@ Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: contract hardening verified locally; Git/CI setup in progress.
+Current phase: reviewed bootstrap public and CI-verified; Wokwi runtime and official TH5 data pending.
 
 ## Initialization
 - [x] Inspect all seven workbook sheets; isolate N06/E2 and applicable shared rules.
@@ -47,7 +47,7 @@ Current phase: contract hardening verified locally; Git/CI setup in progress.
 - [ ] Audit submission links/files and rehearse each member's explanation and live edits.
 
 ## Next action
-Finish Git/CI setup, then run Wokwi and obtain official TH5 data; confirm its definitions before training.
+Run Wokwi and obtain official TH5 data; confirm its definitions before training.
 Keep predictions unavailable until the official dataset and exported tree are validated.
 
 ## Reviewed bootstrap — 2026-11-21
@@ -60,7 +60,10 @@ Keep predictions unavailable until the official dataset and exported tree are va
 - [x] Add progressive-disclosure specs, Conventional Commits, CI, and onboarding CODEOWNERS TODOs.
 - [x] Verify clean staged public checkout: host/MQTT/dashboard/ESP32 checks; local-only workbook test skipped.
 - [x] Verify dashboard syntax and control/diagnosis guards; visual review remains pending.
-- [ ] Verify GitHub CI and main protection.
+- [x] Verify GitHub CI: https://github.com/DanhLent/edge-vibration-monitor/actions/runs/44892723396.
+- [x] Protect main: PRs, both required checks, up-to-date branches, resolved conversations, no force pushes/deletion.
+- [x] Create starter branches for Danh/Nhat/Dat without member-authored changes; solo approval count is zero.
+- [x] Upgrade CI actions to verified Node 24 runtimes after GitHub reported deprecated checkout runtime.
 
 ## Member progress
 ### Danh — Backend/MQTT and integration
