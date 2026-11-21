@@ -1,0 +1,6 @@
+run_id,kind,retained,valid,messages,payload_bytes,mqtt_dup_messages
+20261121T204925Z-606cca,ack,False,True,10,966,0
+20261121T204925Z-606cca,cmd,False,True,10,966,0
+20261121T204925Z-606cca,status,False,True,12,2107,0
+20261121T204925Z-606cca,status,True,True,1,64,0
+20261121T204925Z-606cca,telemetry,False,True,15,5073,0

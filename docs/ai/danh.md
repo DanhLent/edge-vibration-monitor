@@ -22,3 +22,5 @@
 - Browser: support-file upload worked; replacement confirmation stalled. No E2 public saved-source link was verified. Dashboard navigation was attempted after capture shutdown and returned connection refused; visual/control evidence remains pending.
 - Evidence review: publish only validated synthetic CSVs and a sanitized manifest/summary; retain Serial, MQTT traces, database, browser draft and private token outside tracked outputs. No firmware fix or paid-plan upgrade was attempted.
 - Human understanding: Danh must review the capture lifecycle, byte/clock conventions, export joins and failure handling and rehearse a live modification.
+
+- Additional bounded diagnostic: unchanged build `da66910`, one-second mode holds, all three input modes, 15 windows and 10/10 done ACKs with matching windows; latency range 871.833–1180.456 ms. Published separately and explicitly excluded from the required 60-second duration claim.
