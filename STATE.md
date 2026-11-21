@@ -4,7 +4,7 @@ Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: Danh tooling verified; short Wokwi CLI integration verified; full-duration/browser gates and official TH5 data pending.
+Current phase: Danh tooling and short CLI integration verified; PR #2 open for review; full-duration/browser gates and official TH5 data pending.
 
 ## Initialization
 - [x] Inspect all seven workbook sheets; isolate N06/E2 and applicable shared rules.
@@ -47,7 +47,7 @@ Current phase: Danh tooling verified; short Wokwi CLI integration verified; full
 - [ ] Audit submission links/files and rehearse each member's explanation and live edits.
 
 ## Next action
-Run Wokwi and obtain official TH5 data; confirm its definitions before training.
+Review/merge PR #2 manually, complete full-duration Wokwi/browser evidence, and obtain official TH5 data; confirm its definitions before training.
 Keep predictions unavailable until the official dataset and exported tree are validated.
 Dat follow-up: investigate slow simulation/missed ticks and the five-minute CLI API connection limit;
 complete 60 device seconds per mode and browser evidence without mixing firmware into Danh's PR.
@@ -91,7 +91,8 @@ complete 60 device seconds per mode and browser evidence without mixing firmware
 - [x] Short diagnostic: all three modes, 15 stored windows and ten successful commands with matching windows; one-second holds do not satisfy the duration gate.
 - [ ] Save/source-verify an E2 web link; in-app starter-file replacement stalled on a confirmation dialog.
 - [ ] Verify dashboard visually/control through the browser; the attempted URL refused connection after capture shutdown.
-- [ ] Open Danh's tooling PR and verify both required CI checks; leave manual merge to Danh.
+- [x] Open https://github.com/DanhLent/edge-vibration-monitor/pull/2 on danh/backend-mqtt; leave manual merge to Danh.
+- [x] Verify Baseline checks and Conventional commits: https://github.com/DanhLent/edge-vibration-monitor/actions/runs/44948727036 (2096a44).
 
 Partial run: deliverables/measurements/20261121T203825Z-0af0d6 (UTC ID; local date 2026-11-22).
 Measured rate 696.9847–1000.479 Hz; 36.017 s between stored completions; missed notifications rose to 331.

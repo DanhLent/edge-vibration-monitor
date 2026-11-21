@@ -24,3 +24,7 @@
 - Human understanding: Danh must review the capture lifecycle, byte/clock conventions, export joins and failure handling and rehearse a live modification.
 
 - Additional bounded diagnostic: unchanged build `da66910`, one-second mode holds, all three input modes, 15 windows and 10/10 done ACKs with matching windows; latency range 871.833–1180.456 ms. Published separately and explicitly excluded from the required 60-second duration claim.
+
+- Git delivery: only danh/backend-mqtt pushed, authored under DanhLent's verified identity; PR https://github.com/DanhLent/edge-vibration-monitor/pull/2 targets main and remains open for manual review/merge.
+- Required CI passed on 2096a44: Baseline checks and Conventional commits, https://github.com/DanhLent/edge-vibration-monitor/actions/runs/44948727036. The final status-documentation commit must also pass both checks before handoff.
+- Public audit: no private token, database, archive, profile or build binary tracked; both CSV manifests match their published hashes. Firmware/ML and teammate remote branches remain unchanged; no reference drafts were created.
