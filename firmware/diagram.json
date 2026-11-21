@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "author": "CE339 N06 — E2",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-mpu6050",
+      "id": "imu",
+      "top": -70,
+      "left": -190,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "mode",
+      "top": 190,
+      "left": -180,
+      "attrs": {
+        "color": "blue",
+        "label": "MODE"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "green",
+      "top": -70,
+      "left": 240,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r0",
+      "top": -5,
+      "left": 180,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "yellow",
+      "top": 15,
+      "left": 240,
+      "attrs": {
+        "color": "yellow"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 80,
+      "left": 180,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "red",
+      "top": 100,
+      "left": 240,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 165,
+      "left": 180,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "imu:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "imu:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "imu:SDA",
+      "esp:21",
+      "green",
+      []
+    ],
+    [
+      "imu:SCL",
+      "esp:22",
+      "blue",
+      []
+    ],
+    [
+      "imu:AD0",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "mode:1.l",
+      "esp:18",
+      "blue",
+      []
+    ],
+    [
+      "mode:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:25",
+      "r0:1",
+      "green",
+      []
+    ],
+    [
+      "r0:2",
+      "green:A",
+      "green",
+      []
+    ],
+    [
+      "green:C",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "esp:26",
+      "r1:1",
+      "yellow",
+      []
+    ],
+    [
+      "r1:2",
+      "yellow:A",
+      "yellow",
+      []
+    ],
+    [
+      "yellow:C",
+      "esp:GND.2",
+      "black",
+      []
+    ],
+    [
+      "esp:27",
+      "r2:1",
+      "red",
+      []
+    ],
+    [
+      "r2:2",
+      "red:A",
+      "red",
+      []
+    ],
+    [
+      "red:C",
+      "esp:GND.2",
+      "black",
+      []
+    ]
+  ],
+  "dependencies": {}
+}

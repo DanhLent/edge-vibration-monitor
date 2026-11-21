@@ -1,0 +1,5 @@
+#pragma once
+#define EVM_WIFI_SSID "your-wifi-name"
+#define EVM_WIFI_PASSWORD "your-wifi-password"
+#define EVM_MQTT_HOST "test.mosquitto.org"
+#define EVM_USE_SYNTHETIC false

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>N06 · Vibration monitor</title>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--ink:#182434;--muted:#637286;--line:#dce3eb;--accent:#2458a6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,sans-serif}
+header{padding:28px max(24px,calc((100vw - 1120px)/2));background:#182c48;color:#fff}
+header p{margin:0;color:#b9cbe3;font-size:13px}h1{margin:8px 0 4px;font-size:27px;font-weight:650}
+main{max-width:1168px;margin:24px auto;padding:0 24px;display:grid;gap:18px}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px}
+h2{margin:0 0 18px;font-size:16px}p{line-height:1.5}.muted{color:var(--muted);font-size:13px}
+.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.spread{justify-content:space-between}
+.pill{display:inline-block;background:#eaf0f8;border-radius:5px;padding:5px 9px;font-size:12px}
+.online{background:#e8f4ed;color:#276b45}.offline,.unknown,.stale{background:#fff0e7;color:#915322}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:22px}
+.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;margin:7px 0;font-size:25px;font-weight:600}
+select,button{font:inherit;padding:9px 12px;border:1px solid #cbd6e3;border-radius:6px;background:white;color:var(--ink)}
+button{background:var(--accent);color:#fff;border-color:var(--accent);cursor:pointer}button:disabled{opacity:.5;cursor:default}
+canvas{display:block;width:100%;height:255px;margin-top:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.6 system-ui;margin-bottom:0}
+#commandState{min-height:38px}#emptyChart{margin:65px 0;text-align:center}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{gap:10px}.metric strong{font-size:21px}header{padding:22px 24px}}
+</style>
+</head>
+<body>
+<header><p>CE339 · Group N06 · Topic E2</p><h1>Vibration monitor</h1><p>Fan and motor condition monitoring</p></header>
+<main>
+<section>
+<div class="row spread"><div class="row"><label for="device">Device</label><select id="device"><option value="">Waiting for a device</option></select><span id="connection" class="pill">No telemetry</span></div><span id="broker" class="pill">Connecting to backend</span></div>
+<div class="metrics"><div class="metric"><span>RMS (g, provisional)</span><strong id="rms">—</strong></div><div class="metric"><span>Absolute peak (g, provisional)</span><strong id="peak">—</strong></div><div class="metric"><span>Crest factor</span><strong id="crest">—</strong></div></div>
+<p id="sampleInfo" class="muted">Measurements will appear when the device publishes a complete window.</p>
+</section>
+<div class="grid">
+<section><div class="row spread"><h2>Recent measurements</h2><select id="field" aria-label="Chart feature"><option value="rms">RMS</option><option value="peak">Peak</option><option value="crest_factor">Crest factor</option></select></div>
+<p class="muted">Last five minutes · timestamps recorded by the backend</p><canvas id="chart" width="760" height="255" hidden></canvas><p id="emptyChart" class="muted">No samples yet</p></section>
+<section>
+<h2>Diagnosis</h2><p id="prediction">Model unavailable</p><p id="modelNote" class="muted">The official dataset and trained ESP32 tree are still required.</p>
+<h2 style="margin-top:26px">Simulation control</h2><p id="modeInfo" class="muted">No simulation source connected.</p>
+<div class="row"><select id="mode" aria-label="Simulation mode"><option value="normal">Normal</option><option value="imbalance">Imbalance</option><option value="loose">Loose mounting</option></select><button id="apply" disabled>Apply mode</button></div>
+<p id="commandState" class="muted" role="status"></p>
+<p class="muted">Simulation mode is an input label. It is separate from a diagnostic prediction.</p>
+</section>
+</div>
+<section><div class="row spread"><h2>Connection and activity</h2><span id="counts" class="muted"></span></div><p id="health" class="muted"></p><pre id="log"></pre></section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const labels = {normal:'Normal',imbalance:'Imbalance',loose:'Loose mounting'};
+let selected = '', busy = false, deviceRows = [], brokerConnected = false;
+async function request(url, options) {
+  const response = await fetch(url, options);
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(typeof body.detail === 'string' ? body.detail : 'Request failed (' + response.status + ')');
+  return body;
+}
+function updateControls() {
+  const device = deviceRows.find(row => row.id === selected);
+  $('apply').disabled = busy || !brokerConnected || !device || device.connection !== 'online' || device.source !== 'synthetic' || !device.clock_ready || !device.sampling_ok;
+  $('mode').disabled = busy || !device || device.source !== 'synthetic';
+}
+function renderDevice() {
+  const device = deviceRows.find(row => row.id === selected), latest = device?.latest;
+  $('connection').textContent = device?.connection || 'No telemetry';
+  $('connection').className = 'pill ' + (device?.connection || '');
+  $('rms').textContent = latest ? latest.rms.toFixed(4) : '—';
+  $('peak').textContent = latest ? latest.peak.toFixed(4) : '—';
+  $('crest').textContent = latest ? latest.crest_factor.toFixed(3) : '—';
+  const age = latest ? Math.max(0, Date.now()/1000 - latest.received_at).toFixed(1) : '';
+  $('sampleInfo').textContent = latest ? latest.sample_count + ' samples · ' + latest.actual_hz.toFixed(1) +
+    ' Hz measured over ' + (latest.window_duration_us/1000000).toFixed(3) + ' s · ' + latest.missed_samples + ' missed timer samples since boot · received ' + age + ' s ago' :
+    'Measurements will appear when the device publishes a complete window.';
+  $('prediction').textContent = latest?.model_ready ? labels[latest.prediction] : 'Model unavailable';
+  $('modelNote').textContent = latest?.model_ready ? 'Prediction reported by the ESP32 model.' :
+    'The official dataset and trained ESP32 tree are still required.';
+  $('modeInfo').textContent = device?.source === 'synthetic' ? 'Provisional synthetic signal · current mode: ' + labels[device.mode] :
+    device?.source === 'mpu6050' ? 'Physical MPU6050 source; simulation controls are disabled.' : 'No simulation source connected.';
+  $('health').textContent = device ? 'Source: ' + (device.source || 'unknown') + ' · MPU6050: ' +
+    (device.sensor_ok === null ? 'not reported' : device.sensor_ok ? 'responding' : 'not responding') +
+    ' · clock: ' + (device.clock_ready ? 'synchronized' : 'not ready') + ' · sampling: ' + (device.sampling_ok ? 'running' : 'not ready') :
+    'Waiting for a device status or telemetry message.';
+  updateControls();
+}
+function drawChart(points) {
+  const canvas = $('chart');
+  canvas.hidden = !points.length;
+  $('emptyChart').hidden = !!points.length;
+  if (!points.length) return;
+  const g = canvas.getContext('2d'), w = canvas.width, h = canvas.height, pad = 35;
+  g.clearRect(0,0,w,h);
+  const now = Date.now()/1000, maximum = Math.max(.001,...points.map(p=>p.v))*1.15;
+  const x = t=>pad+(t-(now-300))/300*(w-pad-10), y = v=>h-pad-v/maximum*(h-pad-12);
+  g.font='11px system-ui';g.fillStyle='#637286';g.strokeStyle='#e3e9f0';
+  for(let i=0;i<=4;i++){const value=maximum*i/4;g.beginPath();g.moveTo(pad,y(value));g.lineTo(w-10,y(value));g.stroke();g.fillText(value.toFixed(2),0,y(value)+4);}
+  g.strokeStyle='#2458a6';g.lineWidth=2;g.beginPath();
+  points.forEach((point,i)=>i?g.lineTo(x(point.t),y(point.v)):g.moveTo(x(point.t),y(point.v)));g.stroke();
+}
+async function refreshChart() {
+  if (!selected) {drawChart([]);return;}
+  const now = Date.now()/1000;
+  const points = await request('/api/v1/devices/'+encodeURIComponent(selected)+'/telemetry?from='+(now-300)+'&to='+now+'&field='+$('field').value);
+  drawChart(points);
+}
+async function refresh() {
+  try {
+    const [rows,stats] = await Promise.all([request('/api/v1/devices'),request('/api/v1/stats')]);
+    deviceRows = rows;
+    if (!rows.some(row=>row.id===selected)) selected = rows[0]?.id || '';
+    const options = rows.length ? rows.map(row=>new Option(row.id,row.id)) : [new Option('Waiting for a device','')];
+    $('device').replaceChildren(...options);$('device').value=selected;
+    brokerConnected = stats.broker_connected && stats.broker_subscribed;
+    $('broker').textContent = brokerConnected ? 'Broker connected' : 'Broker disconnected';
+    $('broker').className = 'pill ' + (brokerConnected ? 'online' : 'offline');
+    $('counts').textContent = stats.rows+' stored windows · '+stats.telemetry_payload_bytes+' telemetry payload bytes · '+stats.bad_messages+' rejected messages';
+    $('log').textContent = stats.log.join('\n');
+    renderDevice();await refreshChart();
+  } catch(error) {
+    brokerConnected=false;updateControls();
+    $('broker').textContent='Backend unavailable';$('broker').className='pill offline';
+    $('health').textContent=error.message;
+  }
+}
+async function applyMode() {
+  if(busy || !selected) return;
+  busy=true;updateControls();
+  $('commandState').textContent='Sending mode command…';
+  try {
+    const command=await request('/api/v1/devices/'+encodeURIComponent(selected)+'/commands',{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'set_mode',mode:$('mode').value})});
+    const stopAt=Date.now()+Math.max(0,command.expires_at*1000-Date.now())+3000;
+    let state=command.state;
+    while(state==='pending' && Date.now()<stopAt){
+      $('commandState').textContent='Waiting for device acknowledgment…';
+      await new Promise(resolve=>setTimeout(resolve,250));
+      const result=await request('/api/v1/commands/'+command.command_id);state=result.state;
+      if(state==='done') $('commandState').textContent='Command done · '+(result.updated-result.created).toFixed(3)+' s backend round trip';
+      else if(state!=='pending') $('commandState').textContent='Command '+state+' · '+(result.result || 'no acknowledgment');
+    }
+    if(state==='pending') $('commandState').textContent='Acknowledgment timed out; check the connection.';
+    else if(state!=='done' && !$('commandState').textContent.startsWith('Command '+state)) $('commandState').textContent='Command '+state+'; check device connection and clock.';
+    else if(!$('commandState').textContent.startsWith('Command done')) $('commandState').textContent='Command done';
+    await refresh();
+  }catch(error){$('commandState').textContent=error.message;}
+  finally{busy=false;updateControls();}
+}
+$('device').onchange=()=>{selected=$('device').value;renderDevice();refreshChart().catch(error=>$('health').textContent=error.message);};
+$('field').onchange=()=>refreshChart().catch(error=>$('health').textContent=error.message);
+$('apply').onclick=applyMode;
+async function tick(){await refresh();setTimeout(tick,1000);}
+tick();
+</script>
+</body>
+</html>

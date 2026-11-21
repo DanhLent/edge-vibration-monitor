@@ -1,0 +1,23 @@
+# Bootstrap owner; require code-owner reviews only after reviewer pairs are configured.
+* @DanhLent
+/backend/ @DanhLent
+/docs/ @DanhLent
+/.github/ @DanhLent
+/scripts/ @DanhLent
+
+# TODO(Nhat): add the verified GitHub handle, then activate ML ownership with a reviewer.
+# /ml/ <Nhat-handle> @DanhLent
+# /firmware/model.h <Nhat-handle> <Dat-handle>
+# /firmware/model.c <Nhat-handle> <Dat-handle>
+# /docs/ml.md <Nhat-handle> @DanhLent
+# /docs/ai/nhat.md <Nhat-handle> @DanhLent
+
+# TODO(Dat): add the verified GitHub handle, then activate firmware ownership with Nhat.
+# /firmware/ <Dat-handle> <Nhat-handle>
+# Place the model.h/model.c rules AFTER the firmware rule: the last matching rule wins.
+# /docs/hardware.md <Dat-handle> <Nhat-handle>
+# /docs/ai/dat.md <Dat-handle> <Nhat-handle>
+# /backend/ @DanhLent <Dat-handle>
+
+# TODO(team): assign the relevant tests to the same lead/reviewer pairs.
+# /docs/interfaces.md @DanhLent <Nhat-handle> <Dat-handle>

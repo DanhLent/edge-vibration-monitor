@@ -1,0 +1,15 @@
+{
+  "telemetry": {
+    "schema_version": 1, "boot_id": "1234abcd", "ts": 1795300000, "uptime_ms": 1000,
+    "window_id": 1, "window_duration_us": 1000000, "rms": 0.2, "peak": 0.4, "crest_factor": 2.0,
+    "fs_hz": 1000, "sample_count": 1000, "actual_hz": 1000.0, "missed_samples": 0,
+    "source": "synthetic", "mode": "normal", "sensor_ok": true, "model_ready": false, "prediction": null
+  },
+  "status": {
+    "schema_version": 1, "boot_id": "1234abcd", "connection": "online", "source": "synthetic",
+    "mode": "normal", "sensor_ok": true, "clock_ready": true, "sampling_ok": true, "model_ready": false
+  },
+  "offline": {"schema_version": 1, "boot_id": "1234abcd", "connection": "offline"},
+  "command": {"schema_version": 1, "id": "cfixture", "action": "set_mode", "mode": "loose", "exp": 1795300000},
+  "ack": {"schema_version": 1, "boot_id": "1234abcd", "id": "cfixture", "result": "done", "mode": "loose"}
+}

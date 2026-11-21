@@ -1,0 +1,54 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  baseline:
+    name: Baseline checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-dev.lock
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: arduino/setup-arduino-cli@v2
+        with:
+          version: '1.6.0'
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .tools/arduino-data
+            .tools/arduino-downloads
+            .tools/arduino-user
+          key: arduino-${{ runner.os }}-cli1.6.0-esp32-4.0.0-json7.4.3-pubsub2.8.0
+      - name: Install tested dependencies
+        run: |
+          python -m pip install -r requirements-dev.lock
+          bash scripts/setup_arduino.sh
+      - name: Run host and local MQTT tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Check dashboard
+        run: node scripts/check_dashboard.js
+      - name: Compile ESP32
+        run: python scripts/check_firmware.py --cli arduino-cli
+  commits:
+    name: Conventional commits
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check commit subjects and PR title
+        env:
+          COMMIT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          PR_TITLE: ${{ github.event.pull_request.title || '' }}
+        run: python3 scripts/check_commits.py --base "$COMMIT_BASE" --title "$PR_TITLE"
