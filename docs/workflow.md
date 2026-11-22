@@ -44,6 +44,12 @@ and `git merge origin/main`; preserve published history. Open a PR, pass require
 applicable reviews, and merge with a merge commit. Delete finished topic branches after merging.
 Main is the integration branch; long-running integration/develop branches are unnecessary here.
 
+Before Nhat and Dat onboard with verified accounts, reference drafts for their tracks remain on
+local-only branches. Never push those drafts or advance their remote starter branches. Use the
+actual author's identity and label reference drafts clearly; members later explain, modify and
+commit their real contributions themselves. Danh's first tooling PR must contain no firmware or
+ML changes. Record runtime firmware findings for Dat rather than fixing them in that PR.
+
 Conventional Commits: `type(scope): summary`. Types: feat, fix, docs, test, refactor, perf, build,
 ci, chore, revert. Recommended scopes: repo, backend, mqtt, dashboard, firmware, wokwi, ml, fft,
 docs, tests. Use `!` plus a BREAKING CHANGE body when needed. CI checks authored non-merge
@@ -85,3 +91,18 @@ node scripts/check_dashboard.js
 The setup script writes only project-local `.tools/`. Host protocol tests use its ArduinoJson headers;
 set `ARDUINOJSON_INCLUDE` if you install the library elsewhere. Original-workbook verification is
 optional on public clones; scoped-document/routing/AGENTS line-limit checks always run.
+
+## Later task packages
+
+- Dat: measure/tune acquisition with before/after CSV and Nyquist review; verify button, clock,
+  reconnect and mode transitions; then coordinate event/heartbeat publishing and raw-signal timing
+  capture. Preserve the 200–1000 Hz requirement and prove reduction using the reporting convention.
+- Nhat: build an explicitly temporary synthetic loader/generator and cleared-output training notebook;
+  evaluate grouped chronological and seeded random splits with macro F1, confusion matrices and
+  always-normal results. Export faithful C into scratch output and verify host parity on held-out
+  and float32 threshold-boundary vectors while the deployed model remains unavailable.
+- After TH5 arrives, Nhat inspects official units/preprocessing/order and chooses the real split;
+  Dat calibrates simulation inputs. Activation requires actual ESP32/Python parity. FFT evaluation
+  additionally requires raw signals and trustworthy timing; an RMS/peak table alone is insufficient.
+
+These are later-session packages, not completed contributions or permission to push teammate drafts.

@@ -1,0 +1,156 @@
+{
+  "run_id": "20261121T204925Z-606cca",
+  "device_id": "esp32-01",
+  "source": "Wokwi CLI synthetic",
+  "units": "g, provisional",
+  "model_ready": false,
+  "result": "CAPTURED_PENDING_REVIEW",
+  "started_at": 1795294165.543394,
+  "code_commit": "da66910d6f7161c92e86e1f20656d249d0496415",
+  "wokwi_url": null,
+  "mode_seconds": 1.0,
+  "wall_timeout_s": 300.0,
+  "checks": {
+    "build": "PASS",
+    "runtime": "PASS",
+    "mode_capture": "PASS",
+    "commands": "PASS",
+    "dashboard": "NOT RUN",
+    "public_source": "NOT RUN"
+  },
+  "clock_definitions": {
+    "command_latency": "backend updated minus created, milliseconds, successful only",
+    "device_cadence": "completion uptime delta, milliseconds, same boot/mode",
+    "receipt_cadence": "independent receiver wall clock delta, milliseconds",
+    "traffic": "subscriber-received MQTT payload bytes; excludes wire overhead"
+  },
+  "attempts": [
+    {
+      "index": 1,
+      "mode": "normal",
+      "http_status": 202,
+      "before_window_id": 2,
+      "id": "c0036237888c742"
+    },
+    {
+      "index": 2,
+      "mode": "imbalance",
+      "http_status": 202,
+      "before_window_id": 4,
+      "id": "cd4cd074595b343"
+    },
+    {
+      "index": 3,
+      "mode": "loose",
+      "http_status": 202,
+      "before_window_id": 6,
+      "id": "cb084d038adba47"
+    },
+    {
+      "index": 4,
+      "mode": "normal",
+      "http_status": 202,
+      "before_window_id": 8,
+      "id": "ce5429cd9275c44"
+    },
+    {
+      "index": 5,
+      "mode": "imbalance",
+      "http_status": 202,
+      "before_window_id": 9,
+      "id": "c08d5a26da1a049"
+    },
+    {
+      "index": 6,
+      "mode": "loose",
+      "http_status": 202,
+      "before_window_id": 10,
+      "id": "c7ac11f268fc94a"
+    },
+    {
+      "index": 7,
+      "mode": "normal",
+      "http_status": 202,
+      "before_window_id": 11,
+      "id": "c416298c9202743"
+    },
+    {
+      "index": 8,
+      "mode": "imbalance",
+      "http_status": 202,
+      "before_window_id": 12,
+      "id": "cbc4ad727f8954f"
+    },
+    {
+      "index": 9,
+      "mode": "loose",
+      "http_status": 202,
+      "before_window_id": 13,
+      "id": "ca21a7a8f70564a"
+    },
+    {
+      "index": 10,
+      "mode": "normal",
+      "http_status": 202,
+      "before_window_id": 14,
+      "id": "c7791d10ce00544"
+    }
+  ],
+  "findings": [
+    "Dat: missed timer notifications increased"
+  ],
+  "versions": {
+    "python": "3.12.14",
+    "wokwi_cli": "0.29.1 (0aa185144b92)",
+    "arduino_cli": "arduino-cli  Version: 1.6.0 Commit: 50a0e80da Date: 2026-11-10T15:30:50Z"
+  },
+  "source_sha256": {
+    "config.h": "a47935bc4d46115efb6fde6f5711c99396b8c2e105b435b144070567455b8bdb",
+    "diagram.json": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+    "features.cpp": "aab52b5738e4329f2839eb0f76556f6e0932392a6303c7e008d76ed41c8feb8b",
+    "features.h": "029f9d72b9b25af2015a11fcb7c0f49f8418d6b22fa5fa2b44d2dba40159ec59",
+    "libraries.txt": "bc8ee89bcbc67ee31ecc27d1a4a177b9c43e325c26da8503653b4872808f72e0",
+    "model.c": "560aaf1f14bb9bbafe5a0100c9032980971654771c6f292584e574aa43de37cb",
+    "model.h": "3514628a0584da820d95a254135dd6081b539bb25a89d4b157654d936d77c2ef",
+    "protocol.cpp": "90516fcec34de389f521aa0caf6bd509ef42f39d8aedeb5e79c648a65cf90e2c",
+    "protocol.h": "d7b219bd7379ca4c0859dcbfe7fc205b609d957610dca226d92a34a11c481b09",
+    "sampling.cpp": "53eaa28c4d81d876ac4baf258e07312f09e41b96a68ed58fba14a3f14b4c9623",
+    "sampling.h": "ab3180f197f0e02bd6305f3cec051518f0d8de1095daae48560c1a90d93d6a44",
+    "sketch.ino": "e5d2b14923145b0a5bab01ba9ba44caa3b6a005bb7c18686c52fa8bc9fa8a477"
+  },
+  "build_sha256": {
+    "firmware.bin": "058f42fc48cbff93f2f93ffe6790678286199b6735557662ce00dece5e129413",
+    "firmware.elf": "02595ba84392b83c980a7e76a01251eac2f349c01a82d0dcb886358a09e31793",
+    "diagram.json": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25"
+  },
+  "tool_sha256": {
+    "capture_wokwi.py": "07e576d7ffba9320d472ee4b4ea7d060a8b211475710e74835bc862268ef4f1f",
+    "export_measurements.py": "43cab3c2a68d2a26e8ce4ebd0d3f0222920521d5e59a2f3162f1ccecf0da2d99"
+  },
+  "runtime_started_at": 1795294183.8837602,
+  "boot_id": "f4e8c3d2",
+  "finished_at": 1795294312.4575248,
+  "stored_windows": 15,
+  "commands": 10,
+  "observed_messages": 48,
+  "observed_payload_bytes": 9176,
+  "observer_connections": [
+    {
+      "event": "connect",
+      "wall": 1795294183.3732505,
+      "monotonic": 28460.715237514
+    },
+    {
+      "event": "disconnect",
+      "wall": 1795294312.4573503,
+      "monotonic": 28589.799337184
+    }
+  ],
+  "file_sha256": {
+    "sampling.csv": "76d50c4f637b80965c04f4fc8c534af310dfcf7e343e386f3591a0403c840da3",
+    "commands.csv": "c3252b1de6ea172c851dbe7ec1e4e0ad825ed1d825ef19ab69797697df003dab",
+    "traffic.csv": "c5612d768c1349940fff8a872cb752b4c3c811858c886df101f30a233344f49f"
+  },
+  "required_60s_per_mode_passed": false,
+  "diagnostic_note": "Shortened one-device-second-per-mode hold to exercise all three inputs and ten commands within the API connection limit; does not satisfy the mandatory duration gate."
+}

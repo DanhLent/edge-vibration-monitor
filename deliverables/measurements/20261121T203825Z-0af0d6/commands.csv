@@ -1,0 +1,2 @@
+run_id,device_id,id,mode,created,expires_at,updated,state,result,successful_latency_ms,observed_transmissions,ack_boot_id,ack_observer_received_at,first_new_mode_window_id
+20261121T203825Z-0af0d6,esp32-01,cacba1b093b4b43,normal,1795293611.9836154,1795293627.0,1795293613.9148738,done,done,1931.2584400177002,2,b8244b7c,1795293613.915007,3

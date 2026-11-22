@@ -1,0 +1,100 @@
+{
+  "run_id": "20261121T203825Z-0af0d6",
+  "device_id": "esp32-01",
+  "source": "Wokwi CLI synthetic",
+  "units": "g, provisional",
+  "model_ready": false,
+  "result": "BLOCKED",
+  "started_at": 1795293505.1575084,
+  "code_commit": "c632512ed07e384a4b5a90d8cef55ac6b360a4ec",
+  "wokwi_url": null,
+  "mode_seconds": 60,
+  "wall_timeout_s": 900,
+  "checks": {
+    "build": "PASS",
+    "runtime": "PASS",
+    "mode_capture": "BLOCKED",
+    "commands": "BLOCKED",
+    "dashboard": "NOT RUN",
+    "public_source": "BLOCKED"
+  },
+  "clock_definitions": {
+    "command_latency": "backend updated minus created, milliseconds, successful only",
+    "device_cadence": "completion uptime delta, milliseconds, same boot/mode",
+    "receipt_cadence": "independent receiver wall clock delta, milliseconds",
+    "traffic": "subscriber-received MQTT payload bytes; excludes wire overhead"
+  },
+  "attempts": [
+    {
+      "index": 1,
+      "mode": "normal",
+      "http_status": 202,
+      "before_window_id": 2,
+      "id": "cacba1b093b4b43"
+    }
+  ],
+  "findings": [
+    "Dat: missed timer notifications increased",
+    "Wokwi stopped before runtime acceptance completed"
+  ],
+  "versions": {
+    "python": "3.12.14",
+    "wokwi_cli": "0.29.1 (0aa185144b92)",
+    "arduino_cli": "arduino-cli  Version: 1.6.0 Commit: 50a0e80da Date: 2026-11-10T15:30:50Z"
+  },
+  "source_sha256": {
+    "config.h": "a47935bc4d46115efb6fde6f5711c99396b8c2e105b435b144070567455b8bdb",
+    "diagram.json": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+    "features.cpp": "aab52b5738e4329f2839eb0f76556f6e0932392a6303c7e008d76ed41c8feb8b",
+    "features.h": "029f9d72b9b25af2015a11fcb7c0f49f8418d6b22fa5fa2b44d2dba40159ec59",
+    "libraries.txt": "bc8ee89bcbc67ee31ecc27d1a4a177b9c43e325c26da8503653b4872808f72e0",
+    "model.c": "560aaf1f14bb9bbafe5a0100c9032980971654771c6f292584e574aa43de37cb",
+    "model.h": "3514628a0584da820d95a254135dd6081b539bb25a89d4b157654d936d77c2ef",
+    "protocol.cpp": "90516fcec34de389f521aa0caf6bd509ef42f39d8aedeb5e79c648a65cf90e2c",
+    "protocol.h": "d7b219bd7379ca4c0859dcbfe7fc205b609d957610dca226d92a34a11c481b09",
+    "sampling.cpp": "53eaa28c4d81d876ac4baf258e07312f09e41b96a68ed58fba14a3f14b4c9623",
+    "sampling.h": "ab3180f197f0e02bd6305f3cec051518f0d8de1095daae48560c1a90d93d6a44",
+    "sketch.ino": "e5d2b14923145b0a5bab01ba9ba44caa3b6a005bb7c18686c52fa8bc9fa8a477"
+  },
+  "build_sha256": {
+    "firmware.bin": "ba0a29b815a26f74fa1c414a7da1493215051650c66003ef6506c822cabdda16",
+    "firmware.elf": "a7bb52eebe895ddd042ebb5c93ffee3035c6beec227f799e3b469d8c4e49dfb2",
+    "diagram.json": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25"
+  },
+  "tool_sha256": {
+    "capture_wokwi.py": "fdae4e1a3369d1815b15dff201f702ab8ea5627b79bb3dae2a8677d6263475f4",
+    "export_measurements.py": "c6176d46c5795d98aa5780ec7527fd0faaf88135857e736fa946ff29591ed367"
+  },
+  "runtime_started_at": 1795293522.8802972,
+  "boot_id": "b8244b7c",
+  "finished_at": 1795293831.4214838,
+  "stored_windows": 37,
+  "commands": 1,
+  "observed_messages": 46,
+  "observed_payload_bytes": 13753,
+  "observer_connections": [
+    {
+      "event": "connect",
+      "wall": 1795293522.410282,
+      "monotonic": 27799.752268867
+    },
+    {
+      "event": "disconnect",
+      "wall": 1795293831.4211507,
+      "monotonic": 28108.763139135
+    }
+  ],
+  "file_sha256": {
+    "sampling.csv": "d85bab514c98050be3b87e33cf4ac01520eaf9da9420fdb403c6c18035e8a038",
+    "traffic.csv": "a12a17ee3be5d3968d2aa1714d555212dd2bcf9cc82707822cb4eac83dddb7ee",
+    "commands.csv": "08cde7ab1037043285dd8c6013a2389d438fe6b97918fce7dfea05742721e062"
+  },
+  "runtime_notes": [
+    "Wokwi CLI reported API connection timeout after 5 minutes; the token tier requires an upgrade for longer connections. No upgrade attempted."
+  ],
+  "browser_notes": [
+    "Public support-file upload attempted; starter-file replacement confirmation stalled in the supported in-app browser. No saved E2 source readback or public project URL verified.",
+    "Dashboard navigation returned connection refused after the capture backend stopped; no visual/control success claimed."
+  ],
+  "publication_note": "CSV line endings normalized to LF; measured values unchanged."
+}

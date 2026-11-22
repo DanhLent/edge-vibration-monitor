@@ -1,10 +1,10 @@
 # STATE — CE339 N06 / E2
-Updated: 2026-11-21
+Updated: 2026-11-22
 Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: reviewed bootstrap public and CI-verified; Wokwi runtime and official TH5 data pending.
+Current phase: Danh tooling and short CLI integration verified; PR #2 open for review; full-duration/browser gates and official TH5 data pending.
 
 ## Initialization
 - [x] Inspect all seven workbook sheets; isolate N06/E2 and applicable shared rules.
@@ -47,8 +47,10 @@ Current phase: reviewed bootstrap public and CI-verified; Wokwi runtime and offi
 - [ ] Audit submission links/files and rehearse each member's explanation and live edits.
 
 ## Next action
-Run Wokwi and obtain official TH5 data; confirm its definitions before training.
+Review/merge PR #2 manually, complete full-duration Wokwi/browser evidence, and obtain official TH5 data; confirm its definitions before training.
 Keep predictions unavailable until the official dataset and exported tree are validated.
+Dat follow-up: investigate slow simulation/missed ticks and the five-minute CLI API connection limit;
+complete 60 device seconds per mode and browser evidence without mixing firmware into Danh's PR.
 
 ## Reviewed bootstrap — 2026-11-21
 - [x] Fix window boundaries and immutable completion metadata; count missed timer notifications.
@@ -68,6 +70,7 @@ Keep predictions unavailable until the official dataset and exported tree are va
 ## Member progress
 ### Danh — Backend/MQTT and integration
 - [x] Reviewed AI-assisted bootstrap is locally verified; provenance is in README and docs/ai/danh.md.
+- [x] Add unchanged-firmware Wokwi CLI capture and read-only CSV export; pass 25 tests and ESP32 compilation.
 - [ ] Add Nhat/Dat's verified GitHub handles and collaborators; activate reviewer pairs/required approval.
 - [ ] Capture backend/dashboard and traffic evidence; rehearse explanation/live modification.
 ### Nhat — ML/FFT
@@ -76,3 +79,25 @@ Keep predictions unavailable until the official dataset and exported tree are va
 ### Dat — Firmware/Wokwi
 - [ ] Supply verified GitHub handle and accept repository access.
 - [ ] Verify Wokwi timing/control and physical-kit behavior with measurements and evidence.
+
+## Danh integration tooling — 2026-11-22
+- [x] Audit TH3/TH4 automation without importing profiles, databases, credentials or old lab data.
+- [x] Add fresh-run backend/MQTT capture, exact received-byte accounting, cadence and successful ACK latency CSVs.
+- [x] Verify local-broker retry correlation, duplicate/retained handling, incomplete exports and separate clocks.
+- [x] Compile unchanged firmware: 1,026,419 bytes flash, 52,764 bytes static RAM; diagnosis remains unavailable.
+- [x] Document CLI/browser evidence separation and local-only teammate reference drafts; AGENTS.md remains under 60 lines.
+- [x] Capture partial unchanged-build Wokwi CLI evidence: 37 normal windows, one successful command, 13,753 received payload bytes.
+- [ ] Complete 60 device seconds in all modes; the longer run hit its five-minute API connection limit.
+- [x] Short diagnostic: all three modes, 15 stored windows and ten successful commands with matching windows; one-second holds do not satisfy the duration gate.
+- [ ] Save/source-verify an E2 web link; in-app starter-file replacement stalled on a confirmation dialog.
+- [ ] Verify dashboard visually/control through the browser; the attempted URL refused connection after capture shutdown.
+- [x] Open https://github.com/DanhLent/edge-vibration-monitor/pull/2 on danh/backend-mqtt; leave manual merge to Danh.
+- [x] Verify Baseline checks and Conventional commits: https://github.com/DanhLent/edge-vibration-monitor/actions/runs/44948727036 (2096a44).
+
+Partial run: deliverables/measurements/20261121T203825Z-0af0d6 (UTC ID; local date 2026-11-22).
+Measured rate 696.9847–1000.479 Hz; 36.017 s between stored completions; missed notifications rose to 331.
+Successful backend command latency 1931.258 ms. These are provisional synthetic integration measurements,
+not full-mode acceptance, wire traffic, reduction evidence, model validation or physical-kit results.
+
+Short diagnostic: deliverables/measurements/20261121T204925Z-606cca; 48 received messages / 9,176 payload bytes.
+Ten done/done command latencies 871.833–1180.456 ms; median 1056.005 ms.
