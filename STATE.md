@@ -1,10 +1,11 @@
 # STATE — CE339 N06 / E2
-Updated: 2026-11-22
+Updated: 2026-11-24
 Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
+Verified GitHub: Danh @DanhLent; Nhat @GreenyB (API login Greenyb); Dat @nguyenngac214.
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: Danh tooling and short CLI integration verified; PR #2 open for review; full-duration/browser gates and official TH5 data pending.
+Current phase: PR #2 merged; teammate write invitations sent; full-duration/browser gates and official TH5 data pending.
 
 ## Initialization
 - [x] Inspect all seven workbook sheets; isolate N06/E2 and applicable shared rules.
@@ -47,7 +48,8 @@ Current phase: Danh tooling and short CLI integration verified; PR #2 open for r
 - [ ] Audit submission links/files and rehearse each member's explanation and live edits.
 
 ## Next action
-Review/merge PR #2 manually, complete full-duration Wokwi/browser evidence, and obtain official TH5 data; confirm its definitions before training.
+Complete one bounded CLI liveness check before further Wokwi/browser captures; retain local drafts and export offline handoffs if boot remains blocked.
+Teammates must accept write invitations. Obtain official TH5 data and confirm its definitions before training.
 Keep predictions unavailable until the official dataset and exported tree are validated.
 Dat follow-up: investigate slow simulation/missed ticks and the five-minute CLI API connection limit;
 complete 60 device seconds per mode and browser evidence without mixing firmware into Danh's PR.
@@ -71,13 +73,16 @@ complete 60 device seconds per mode and browser evidence without mixing firmware
 ### Danh — Backend/MQTT and integration
 - [x] Reviewed AI-assisted bootstrap is locally verified; provenance is in README and docs/ai/danh.md.
 - [x] Add unchanged-firmware Wokwi CLI capture and read-only CSV export; pass 25 tests and ESP32 compilation.
-- [ ] Add Nhat/Dat's verified GitHub handles and collaborators; activate reviewer pairs/required approval.
+- [x] Verify Nhat/Dat's GitHub handles and send write collaborator invitations.
+- [ ] Enable one non-author approval after both invitations are accepted and Danh's pre-TH5 PRs are merged.
 - [ ] Capture backend/dashboard and traffic evidence; rehearse explanation/live modification.
 ### Nhat — ML/FFT
-- [ ] Supply verified GitHub handle and accept repository access.
+- [x] Verify GitHub handle through the GitHub API.
+- [ ] Accept the repository write invitation.
 - [ ] Obtain official TH5 data, train/evaluate/export, record actual ESP32 parity, evaluate FFT.
 ### Dat — Firmware/Wokwi
-- [ ] Supply verified GitHub handle and accept repository access.
+- [x] Verify GitHub handle through the GitHub API.
+- [ ] Accept the repository write invitation.
 - [ ] Verify Wokwi timing/control and physical-kit behavior with measurements and evidence.
 
 ## Danh integration tooling — 2026-11-22
@@ -91,7 +96,7 @@ complete 60 device seconds per mode and browser evidence without mixing firmware
 - [x] Short diagnostic: all three modes, 15 stored windows and ten successful commands with matching windows; one-second holds do not satisfy the duration gate.
 - [ ] Save/source-verify an E2 web link; in-app starter-file replacement stalled on a confirmation dialog.
 - [ ] Verify dashboard visually/control through the browser; the attempted URL refused connection after capture shutdown.
-- [x] Open https://github.com/DanhLent/edge-vibration-monitor/pull/2 on danh/backend-mqtt; leave manual merge to Danh.
+- [x] Merge https://github.com/DanhLent/edge-vibration-monitor/pull/2 through merge commit 4827210; remove the finished branch.
 - [x] Verify Baseline checks and Conventional commits: https://github.com/DanhLent/edge-vibration-monitor/actions/runs/44948727036 (2096a44).
 
 Partial run: deliverables/measurements/20261121T203825Z-0af0d6 (UTC ID; local date 2026-11-22).
@@ -101,3 +106,14 @@ not full-mode acceptance, wire traffic, reduction evidence, model validation or 
 
 Short diagnostic: deliverables/measurements/20261121T204925Z-606cca; 48 received messages / 9,176 payload bytes.
 Ten done/done command latencies 871.833–1180.456 ms; median 1056.005 ms.
+
+## Teammate onboarding — 2026-11-24
+- [x] Verify @nguyenngac214 (Dat, API user ID 360623354) and @GreenyB (Nhat, API login Greenyb, user ID 81990354).
+- [x] Send repository write invitations to both accounts; acceptance remains pending.
+- [x] Assign one effective CODEOWNER per path: Danh for backend/scripts/dashboard/governance, Dat for firmware/hardware, Nhat for ML/model artifacts.
+- [ ] Confirm both invitations are accepted before requiring a non-author review.
+
+Single-owner rules replace the reviewer-pair onboarding guidance for this pre-TH5 work.
+Main still requires both CI checks, up-to-date PRs, and resolved conversations; stale approvals are dismissed.
+The approval count remains zero and code-owner review remains disabled until the planned later review-policy change.
+Do not push local reference drafts or advance teammate starter branches; teammates review, adapt, and commit their own work.
