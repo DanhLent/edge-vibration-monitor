@@ -1,0 +1,29 @@
+{
+  "engine": "Wokwi web",
+  "profile": "circuit",
+  "publish_mode": "event",
+  "binary_sha256": "acc6103553fbf8eb830f6ff1eda8dd499bf779078c90dc0184286cddf2695b42",
+  "diagram_sha256": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+  "commands": [],
+  "result": "PASS",
+  "mode_evidence": {
+    "normal": {
+      "seconds": 60.093,
+      "windows": 61,
+      "rms_g": 0.0945825,
+      "peak_g": 0.253418
+    },
+    "imbalance": {
+      "seconds": 60.0,
+      "windows": 61,
+      "rms_g": 0.1644134,
+      "peak_g": 0.3514453
+    },
+    "loose": {
+      "seconds": 60.0,
+      "windows": 61,
+      "rms_g": 0.1335669,
+      "peak_g": 0.3263263
+    }
+  }
+}

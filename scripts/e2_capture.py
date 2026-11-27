@@ -141,7 +141,8 @@ def capture(args):
                     return until(lambda: (row := latest_serial()) and row[2] == mode and (not before or row[0] > before[0]) and row, 35,
                                  f"{mode} serial window")
 
-                until(broker_ready, 40, "backend and observer broker subscriptions")
+                if args.profile != "circuit":
+                    until(broker_ready, 40, "backend and observer broker subscriptions")
                 opened = time.monotonic()
                 if args.web:
                     console = serial.open("w")
@@ -166,13 +167,21 @@ def capture(args):
                                                  stdout=sim_log, stderr=subprocess.STDOUT)
                     del cli_environment
                 print(f"Dashboard {url}", flush=True)
-                info = until(ready, args.startup, "trained Wokwi device readiness")
-                boot = report["boot_id"] = info["boot_id"]
+                if args.profile != "circuit":
+                    info = until(ready, args.startup, "trained Wokwi device readiness")
+                    boot = report["boot_id"] = info["boot_id"]
                 until(latest_serial, 25, "Wokwi serial windows")
 
-                def after(start, seconds):
-                    return until(lambda: (row := latest_serial()) and row[1] >= start[1] + seconds * 1000 and row,
+                def after(start, seconds, *, windows=0):
+                    return until(lambda: (row := latest_serial()) and row[1] >= start[1] + seconds * 1000
+                                         and row[0] >= start[0] + windows and row,
                                  max(45, seconds * 8), f"{seconds} device seconds")
+
+                def press_button(previous):
+                    next_mode = MODES[(MODES.index(previous[2]) + 1) % len(MODES)]
+                    Path(str(done) + ".button").write_text(str(previous[0]))
+                    return until(lambda: (row := latest_serial()) and row[2] == next_mode and row,
+                                 35, "button mode change")
 
                 if args.profile == "traffic":
                     anchor = set_mode("normal")
@@ -194,11 +203,18 @@ def capture(args):
                             raise CaptureError("Event capture is missing a prediction change or feature heartbeat")
                 else:
                     report["mode_evidence"] = {}
-                    for mode in MODES if args.profile == "full" else (args.profile,):
-                        first = set_mode(mode)
-                        last = after(first, args.mode_seconds)
+                    for mode in MODES if args.profile in ("full", "circuit") else (args.profile,):
+                        if args.profile == "circuit":
+                            first = latest_serial()
+                            if first[2] != mode:
+                                first = press_button(first)
+                            if first[2] != mode:
+                                raise CaptureError("Wokwi button advanced to an unexpected mode")
+                        else:
+                            first = set_mode(mode)
+                        last = after(first, args.mode_seconds, windows=args.mode_seconds)
                         rows = [row for row in serial_windows(serial) if first[0] <= row[0] <= last[0]]
-                        if (len(rows) < args.mode_seconds or
+                        if (len(rows) != last[0] - first[0] + 1 or
                                 any(row[2] != mode or row[3] != MODES.index(mode) or not row[6] for row in rows)):
                             raise CaptureError(f"Missing, misclassified, or unhealthy {mode} windows")
                         report["mode_evidence"][mode] = {"seconds": (last[1]-first[1])/1000, "windows":len(rows),
@@ -211,15 +227,17 @@ def capture(args):
                         report["dashboard"] = json.loads(capture.stdout)
                         screenshot_ack = http.get("/api/v1/commands/" + report["dashboard"]["id"]).json()
                         screenshot_latest = device()["latest"]
-                        report["dashboard"].update(ack=screenshot_ack["state"], window=screenshot_latest["window_id"],
-                                                   prediction=screenshot_latest["prediction"])
+                        decision = report["dashboard"]
+                        if (screenshot_ack["state"] != "done" or screenshot_ack["result"] != "done" or
+                                screenshot_latest["boot_id"] != decision["boot"] or
+                                screenshot_latest["window_id"] < decision["window"] or
+                                screenshot_latest["prediction"] != decision["mode"]):
+                            raise CaptureError("Dashboard screenshot evidence failed post-capture correlation")
                 if args.button:
                     if not args.web:
                         raise CaptureError("Browser simulator required for the interactive button check")
-                    previous = latest_serial()
-                    Path(str(done) + ".button").touch()
-                    button_mode = MODES[(MODES.index(previous[2]) + 1) % len(MODES)]
-                    changed = until(lambda: (row := latest_serial()) and row[2] == button_mode and row, 35, "button mode change")
+                    changed = press_button(latest_serial())
+                    button_mode = changed[2]
                     after(changed, 3)
                     if latest_serial()[2] != button_mode:
                         raise CaptureError("Button press changed mode more than once")
@@ -238,8 +256,8 @@ def capture(args):
             terminate(backend)
             observer.close()
             rows = serial_windows(serial)
-            with (result_dir / "windows.csv").open("w") as stream:
-                writer = csv.writer(stream)
+            with (result_dir / "windows.csv").open("w", newline="") as stream:
+                writer = csv.writer(stream, lineterminator="\n")
                 writer.writerow(("window_id", "device_uptime_ms", "mode", "prediction_id", "rms_g", "peak_g", "sensor_ok"))
                 writer.writerows(rows)
             write_json(result_dir / "summary.json", report)
@@ -253,7 +271,7 @@ def main():
         parser.add_argument(argument, type=Path)
     parser.add_argument("--wokwi-cli", type=Path, default=ROOT / ".tools/wokwi-cli")
     parser.add_argument("--token-file", type=Path, default=Path.home()/".config/ce339/wokwi_token")
-    parser.add_argument("--profile", choices=("full", "traffic", *MODES), default="full")
+    parser.add_argument("--profile", choices=("full", "circuit", "traffic", *MODES), default="full")
     parser.add_argument("--publish", choices=("event", "periodic", "raw"), default="event")
     parser.add_argument("--mode-seconds", type=int, default=60)
     parser.add_argument("--startup", type=int, default=60)
@@ -261,7 +279,12 @@ def main():
     parser.add_argument("--button", action="store_true")
     parser.add_argument("--web", action="store_true")
     parser.add_argument("--device", default="esp32-01")
-    raise SystemExit(capture(parser.parse_args()))
+    args = parser.parse_args()
+    if (args.button or args.profile == "circuit") and not args.web:
+        parser.error("Button/circuit checks use the Wokwi browser")
+    if args.dashboard and args.profile in ("circuit", "traffic"):
+        parser.error("Dashboard checks require a live feature profile")
+    raise SystemExit(capture(args))
 
 
 if __name__ == "__main__":

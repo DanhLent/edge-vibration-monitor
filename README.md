@@ -11,6 +11,10 @@ stores unique measurement windows, and provides acknowledged simulation-mode con
 Synthetic modes are provisional inputs, not validated predictions. Wokwi runtime, official TH5
 calibration/training, traffic experiments, evaluated FFT, and physical validation remain pending.
 
+The trained local Wokwi integration has reviewed [dashboard](deliverables/dashboard/wokwi-th5/README.md)
+and [circuit and traffic measurements](deliverables/measurements/wokwi-th5-traffic/README.md).
+Those measurements use the offline TH5 firmware and model handoffs.
+
 ## Start the backend
 
 Use Python 3.12 for the tested development environment:

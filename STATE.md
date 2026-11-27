@@ -5,7 +5,7 @@ Verified GitHub: Danh @DanhLent; Nhat @GreenyB (API login Greenyb); Dat @nguyenn
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: PRs #1–#3 merged. Official TH5 received. Teammate write invitations remain pending.
+Current phase: PRs #1–#4 merged. Official TH5 received. Teammate write invitations remain pending.
 Public main keeps the reviewed baseline while the TH5 firmware and model are developed and tested on local drafts.
 
 ## Initialization
@@ -48,7 +48,28 @@ Public main keeps the reviewed baseline while the TH5 firmware and model are dev
 - [ ] Finish final PDF, slides, dashboard evidence, 3–5-minute video, README, and AI log.
 - [ ] Audit submission links/files and rehearse each member's explanation and live edits.
 
-## Next action
+## Local TH5 Wokwi verification — 2026-11-27
+
+- The three calibrated inputs each passed 61 consecutive Wokwi windows and
+  at least 60 device seconds. The virtual button advanced through all modes.
+- Browser Apply produced a correlated MQTT ACK in 0.993 s and a newer
+  same-boot feature window with an imbalance prediction.
+- The matched Wokwi traffic experiment reduced received payload by 37.79×
+  (97.35%). The event stream included two class changes and a 60-second
+  feature heartbeat.
+- The official TH5 tree reached 0.3557 temporal macro F1 (0.2820 always-normal)
+  and 0.5331 grouped-random macro F1 (0.2921 always-normal). The temporal
+  loose-mount class had one true positive out of 1,080 windows.
+- Parity was 12,188/12,188 on Wokwi ESP32 independent probes and
+  7,797/7,797 on private held-out and boundary vectors in host C and
+  Espressif QEMU. Physical-kit verification and FFT remain pending.
+
+Published evidence: [dashboard](deliverables/dashboard/wokwi-th5/README.md),
+[traffic and circuit](deliverables/measurements/wokwi-th5-traffic/README.md).
+The trained source and runnable simulator project are local handoffs.
+The public checkout uses the bootstrap firmware until member-owned PRs land.
+
+## Historical pre-TH5 next action
 Complete one bounded CLI liveness check before further Wokwi/browser captures; retain local drafts and export offline handoffs if boot remains blocked.
 Teammates must accept write invitations. Obtain official TH5 data and confirm its definitions before training.
 Keep predictions unavailable until the official dataset and exported tree are validated.
@@ -76,7 +97,8 @@ complete 60 device seconds per mode and browser evidence without mixing firmware
 - [x] Add unchanged-firmware Wokwi CLI capture and read-only CSV export; pass 25 tests and ESP32 compilation.
 - [x] Verify Nhat/Dat's GitHub handles and send write collaborator invitations.
 - [ ] Enable one non-author approval after both invitations are accepted and Danh's pre-TH5 PRs are merged.
-- [ ] Capture backend/dashboard and traffic evidence; rehearse explanation/live modification.
+- [x] Capture backend/dashboard and traffic evidence.
+- [ ] rehearse explanation/live modification.
 ### Nhat — ML/FFT
 - [x] Verify GitHub handle through the GitHub API.
 - [ ] Accept the repository write invitation.

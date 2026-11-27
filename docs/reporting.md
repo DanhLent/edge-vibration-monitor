@@ -123,7 +123,9 @@ mode-600 `--token-file`. A local Playwright Chromium or Edge installation with
 to the browser executable when using a system browser. `--web` uses the documented Wokwi
 custom-firmware template. Use `--web --button` for interactive button evidence.
 
-`--profile full` checks all three modes, or select one mode per run to fit the CLI time limit.
+`--profile full` checks all three modes, or select one mode per run to fit the CLI time limit. The browser-only
+`--profile circuit` uses the virtual button to hold all three modes independently
+of the public MQTT gateway.
 For traffic, build the same combined source with `EVM_PUBLISH_MODE` set to 0, 1, or 2 for
 event, periodic, or raw. Run `--profile traffic --publish event|periodic|raw` with the
 matching binary. Run sequentially when using one device ID. For concurrent runs, use
@@ -131,5 +133,4 @@ distinct same-length identifiers with `EVM_DEVICE_ID` and the matching `--device
 device-clock checkpoints and tracks an 82-device-second interval from the normal baseline.
 The raw observer retains only batch headers and byte counts. Compare the reviewed summaries and
 compute the normalized payload ratio with
-`python -m scripts.compare_e2_traffic RAW.json PERIODIC.json EVENT.json` and
-keep private databases, full logs, account files, and raw samples in ignored storage.
+`python -m scripts.compare_e2_traffic RAW.json EVENT.json --periodic PERIODIC.json` with the periodic run optional. Keep private databases, full logs, account files, and raw samples in ignored storage.
