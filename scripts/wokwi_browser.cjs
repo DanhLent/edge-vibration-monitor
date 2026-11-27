@@ -35,7 +35,7 @@ async function run() {
     const upload = page.waitForEvent('filechooser');
     await choice.click();
     await (await upload).setFiles(binary);
-    let last = 0;
+    let last = 0, lastPress = "";
     while (!fs.existsSync(done)) {
       const body = await page.locator('body').innerText();
       for (const line of body.matchAll(/(?:E2_WINDOW,(\d+),\d+,\w+,-?\d+,\d+\.\d+,\d+\.\d+,[01]|E2_PARITY,\d+,\d+,[01])/g)) {
@@ -43,7 +43,8 @@ async function run() {
         if (Number(line[1]) > last) { last = Number(line[1]); console.log(line[0]); }
       }
       const button = done + '.button';
-      if (fs.existsSync(button) && !fs.existsSync(button + '.pressed')) {
+      if (fs.existsSync(button) && fs.readFileSync(button, 'utf8') !== lastPress) {
+        lastPress = fs.readFileSync(button, 'utf8');
         const part = page.locator('wokwi-pushbutton').first();
         const box = await part.boundingBox();
         if (!box) throw new Error('Wokwi pushbutton missing from the verified diagram');
@@ -51,7 +52,6 @@ async function run() {
         await page.mouse.down();
         await new Promise(resolve=>setTimeout(resolve, 650));
         await page.mouse.up();
-        fs.writeFileSync(button + '.pressed', '');
       }
       await new Promise(resolve=>setTimeout(resolve, 150));
     }
@@ -72,19 +72,27 @@ async function captureDashboard(url, screenshot, device) {
     const commandResponse = page.waitForResponse(res => res.request().method()==='POST' && res.url().endsWith('/commands'));
     await page.locator('#apply').click();
     const command = await (await commandResponse).json();
-    await page.waitForFunction(async ({command, before, mode, device}) => {
-      const [ack, latest] = await Promise.all([
-        fetch('/api/v1/commands/'+command.command_id).then(res=>res.json()),
-        fetch('/api/v1/devices/'+device+'/latest').then(res=>res.json())
+    const deadline = Date.now()+45000;
+    let deviceWindow, ack;
+    do {
+      [ack, deviceWindow] = await Promise.all([
+        page.request.get(url+'/api/v1/commands/'+command.command_id).then(res=>res.json()),
+        page.request.get(url+'/api/v1/devices/'+device+'/latest').then(res=>res.json())
       ]);
-      return ack.state==='done' && ack.result==='done' && latest.boot_id===before.boot_id &&
-        latest.window_id>before.window_id && latest.mode===mode && latest.model_ready &&
-        latest.prediction===mode && document.querySelector('#commandState').textContent.startsWith('Command done') &&
-        document.querySelector('#prediction').textContent.trim()===(mode==='loose'?'Loose mounting':'Imbalance') &&
-        !document.querySelector('#chart').hidden;
-    }, {command,before,mode,device}, {timeout:45000});
+      if (ack.state !== 'pending' && ack.state !== 'done') throw new Error('Browser command '+ack.state);
+      if (ack.state==='done' && ack.result==='done' && deviceWindow.boot_id===before.boot_id &&
+          deviceWindow.window_id>before.window_id && deviceWindow.mode===mode &&
+          deviceWindow.model_ready && deviceWindow.prediction===mode) break;
+      if (Date.now()>=deadline) throw new Error('No correlated browser ACK and matching window');
+      await new Promise(resolve=>setTimeout(resolve,200));
+    } while (true);
+    await page.waitForFunction(label =>
+      document.querySelector('#commandState').textContent.startsWith('Command done') &&
+      document.querySelector('#prediction').textContent.trim()===label &&
+      !document.querySelector('#chart').hidden, mode==='loose'?'Loose mounting':'Imbalance', {timeout:10000});
     await page.screenshot({path:screenshot,fullPage:true});
-    console.log(JSON.stringify({id:command.command_id,mode,before:before.window_id,boot:before.boot_id}));
+    console.log(JSON.stringify({id:command.command_id,mode,before:before.window_id,boot:before.boot_id,window:deviceWindow.window_id,
+      prediction:deviceWindow.prediction,ack:ack.state}));
   } finally { await browser.close(); }
 }
 

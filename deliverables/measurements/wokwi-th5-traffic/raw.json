@@ -1,0 +1,47 @@
+{
+  "engine": "Wokwi web",
+  "profile": "traffic",
+  "publish_mode": "raw",
+  "binary_sha256": "0c7ae5ab58625608202ff73dac0d273ff418818bd8cd50338a1d0198a5d39830",
+  "diagram_sha256": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+  "commands": [
+    {
+      "id": "cbc16c3ef3d1a41",
+      "mode": "normal",
+      "latency_ms": 900.7532596588135
+    },
+    {
+      "id": "cc272136c1e4d46",
+      "mode": "imbalance",
+      "latency_ms": 1048.9816665649414
+    },
+    {
+      "id": "cd2781532992544",
+      "mode": "loose",
+      "latency_ms": 877.2883415222168
+    }
+  ],
+  "result": "PASS",
+  "boot_id": "6ee99f9b",
+  "traffic": {
+    "messages_by_topic": {
+      "raw": 324,
+      "telemetry": 0,
+      "status": 18,
+      "cmd": 2,
+      "ack": 2
+    },
+    "payload_bytes_by_topic": {
+      "raw": 167508,
+      "telemetry": 0,
+      "status": 3123,
+      "cmd": 194,
+      "ack": 194
+    },
+    "messages": 346,
+    "payload_bytes": 171019,
+    "unique_raw_batches": 324,
+    "telemetry": []
+  },
+  "device_seconds": 82.855
+}

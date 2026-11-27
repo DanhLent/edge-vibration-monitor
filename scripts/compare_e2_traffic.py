@@ -8,9 +8,10 @@ MODES = ("raw", "periodic", "event")
 
 
 def compare(runs):
-    if any(run["result"] != "PASS" or run["publish_mode"] != mode
-           or run["profile"] != "traffic" for mode, run in zip(MODES, runs, strict=True)):
-        raise ValueError("Expected three passing traffic runs: raw, periodic, event")
+    modes = tuple(run["publish_mode"] for run in runs)
+    if modes not in (("raw", "event"), MODES) or any(
+            run["result"] != "PASS" or run["profile"] != "traffic" for run in runs):
+        raise ValueError("Expected passing raw and event runs with an optional periodic run")
     durations = [run["device_seconds"] for run in runs]
     if max(durations) - min(durations) > 2 or min(durations) < 82:
         raise ValueError("Traffic intervals must match within two device seconds")
@@ -36,10 +37,12 @@ def compare(runs):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for mode in MODES:
-        parser.add_argument(mode, type=Path)
+    parser.add_argument("raw", type=Path)
+    parser.add_argument("event", type=Path)
+    parser.add_argument("--periodic", type=Path)
     args = parser.parse_args()
-    runs = [json.loads(getattr(args, mode).read_text()) for mode in MODES]
+    paths = [args.raw, args.periodic, args.event] if args.periodic else [args.raw, args.event]
+    runs = [json.loads(path.read_text()) for path in paths]
     table = compare(runs)
     import sys
     writer = csv.DictWriter(sys.stdout, fieldnames=tuple(table[0]), lineterminator="\n")

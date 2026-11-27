@@ -1,0 +1,4 @@
+publication,device_seconds,payload_bytes,messages,payload_bytes_per_device_second,raw_to_observed_ratio,reduction_percent
+raw,82.855,171019,346,2064.0758,1.0,0.0
+periodic,82.649,30810,103,372.7813,5.537,81.9396
+event,82.893,4527,25,54.6126,37.7949,97.3541

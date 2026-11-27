@@ -5,11 +5,15 @@
 ESP32 fan/motor vibration monitoring with MPU6050, MQTT, a FastAPI/SQLite dashboard, and a planned
 shallow decision-tree diagnosis. Target: evaluated FFT extension, Wokwi first, physical kit later.
 
-The reviewed scaffold computes one-second RMS, absolute peak, and crest factor, publishes v1 JSON,
+The public bootstrap firmware computes one-second RMS, absolute peak, and crest factor, publishes v1 JSON,
 stores unique measurement windows, and provides acknowledged simulation-mode control.
-**The trained model is unavailable: predictions are null and diagnosis LEDs remain off.**
-Synthetic modes are provisional inputs, not validated predictions. Wokwi runtime, official TH5
-calibration/training, traffic experiments, evaluated FFT, and physical validation remain pending.
+**The public bootstrap uses the unavailable model stub.** Its predictions are null and its
+diagnosis LEDs remain off. The trained local build uses the private handoffs below. Physical
+validation and FFT remain pending.
+
+The trained local Wokwi integration has reviewed [dashboard](deliverables/dashboard/wokwi-th5/README.md)
+and [circuit and traffic measurements](deliverables/measurements/wokwi-th5-traffic/README.md).
+Those measurements use the offline TH5 firmware and model handoffs.
 
 ## Start the backend
 

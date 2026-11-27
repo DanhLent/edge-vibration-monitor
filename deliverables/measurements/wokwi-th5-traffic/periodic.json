@@ -1,0 +1,534 @@
+{
+  "engine": "Wokwi web",
+  "profile": "traffic",
+  "publish_mode": "periodic",
+  "binary_sha256": "5dba7bb602389cfa259ce104c1c3f47928907ff270970d8883bab79b6bdb393c",
+  "diagram_sha256": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+  "commands": [
+    {
+      "id": "cabfcb7509c1047",
+      "mode": "normal",
+      "latency_ms": 956.0492038726807
+    },
+    {
+      "id": "cbe6307386d634a",
+      "mode": "imbalance",
+      "latency_ms": 1001.8811225891113
+    },
+    {
+      "id": "cb7dc4b664c4246",
+      "mode": "loose",
+      "latency_ms": 1165.743350982666
+    }
+  ],
+  "result": "PASS",
+  "boot_id": "d5e9e65e",
+  "traffic": {
+    "messages_by_topic": {
+      "raw": 0,
+      "telemetry": 81,
+      "status": 18,
+      "cmd": 2,
+      "ack": 2
+    },
+    "payload_bytes_by_topic": {
+      "raw": 0,
+      "telemetry": 27299,
+      "status": 3123,
+      "cmd": 194,
+      "ack": 194
+    },
+    "messages": 103,
+    "payload_bytes": 30810,
+    "unique_raw_batches": 0,
+    "telemetry": [
+      {
+        "window_id": 34,
+        "uptime_ms": 36683,
+        "mode": "normal",
+        "prediction": "normal"
+      },
+      {
+        "window_id": 35,
+        "uptime_ms": 37683,
+        "mode": "normal",
+        "prediction": "normal"
+      },
+      {
+        "window_id": 36,
+        "uptime_ms": 38683,
+        "mode": "normal",
+        "prediction": "normal"
+      },
+      {
+        "window_id": 37,
+        "uptime_ms": 39683,
+        "mode": "normal",
+        "prediction": "normal"
+      },
+      {
+        "window_id": 38,
+        "uptime_ms": 40683,
+        "mode": "normal",
+        "prediction": "normal"
+      },
+      {
+        "window_id": 39,
+        "uptime_ms": 42025,
+        "mode": "imbalance",
+        "prediction": "imbalance"
+      },
+      {
+        "window_id": 40,
+        "uptime_ms": 43025,
+        "mode": "imbalance",
+        "prediction": "imbalance"
+      },
+      {
+        "window_id": 41,
+        "uptime_ms": 44025,
+        "mode": "imbalance",
+        "prediction": "imbalance"
+      },
+      {
+        "window_id": 42,
+        "uptime_ms": 45025,
+        "mode": "imbalance",
+        "prediction": "imbalance"
+      },
+      {
+        "window_id": 43,
+        "uptime_ms": 46025,
+        "mode": "imbalance",
+        "prediction": "imbalance"
+      },
+      {
+        "window_id": 44,
+        "uptime_ms": 47325,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 45,
+        "uptime_ms": 48325,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 46,
+        "uptime_ms": 49325,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 47,
+        "uptime_ms": 50325,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 48,
+        "uptime_ms": 51332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 49,
+        "uptime_ms": 52332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 50,
+        "uptime_ms": 53332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 51,
+        "uptime_ms": 54332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 52,
+        "uptime_ms": 55332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 53,
+        "uptime_ms": 56332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 54,
+        "uptime_ms": 57332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 55,
+        "uptime_ms": 58332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 56,
+        "uptime_ms": 59332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 57,
+        "uptime_ms": 60332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 58,
+        "uptime_ms": 61332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 59,
+        "uptime_ms": 62332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 60,
+        "uptime_ms": 63332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 61,
+        "uptime_ms": 64332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 62,
+        "uptime_ms": 65332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 63,
+        "uptime_ms": 66332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 64,
+        "uptime_ms": 67332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 65,
+        "uptime_ms": 68332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 66,
+        "uptime_ms": 69332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 67,
+        "uptime_ms": 70332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 68,
+        "uptime_ms": 71332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 69,
+        "uptime_ms": 72332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 70,
+        "uptime_ms": 73332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 71,
+        "uptime_ms": 74332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 72,
+        "uptime_ms": 75332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 73,
+        "uptime_ms": 76332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 74,
+        "uptime_ms": 77332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 75,
+        "uptime_ms": 78332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 76,
+        "uptime_ms": 79332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 77,
+        "uptime_ms": 80332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 78,
+        "uptime_ms": 81332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 79,
+        "uptime_ms": 82332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 80,
+        "uptime_ms": 83332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 81,
+        "uptime_ms": 84332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 82,
+        "uptime_ms": 85332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 83,
+        "uptime_ms": 86332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 84,
+        "uptime_ms": 87332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 85,
+        "uptime_ms": 88332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 86,
+        "uptime_ms": 89332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 87,
+        "uptime_ms": 90332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 88,
+        "uptime_ms": 91332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 89,
+        "uptime_ms": 92332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 90,
+        "uptime_ms": 93332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 91,
+        "uptime_ms": 94332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 92,
+        "uptime_ms": 95332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 93,
+        "uptime_ms": 96332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 94,
+        "uptime_ms": 97332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 95,
+        "uptime_ms": 98332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 96,
+        "uptime_ms": 99332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 97,
+        "uptime_ms": 100332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 98,
+        "uptime_ms": 101332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 99,
+        "uptime_ms": 102332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 100,
+        "uptime_ms": 103332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 101,
+        "uptime_ms": 104332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 102,
+        "uptime_ms": 105332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 103,
+        "uptime_ms": 106332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 104,
+        "uptime_ms": 107332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 105,
+        "uptime_ms": 108332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 106,
+        "uptime_ms": 109332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 107,
+        "uptime_ms": 110332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 108,
+        "uptime_ms": 111332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 109,
+        "uptime_ms": 112332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 110,
+        "uptime_ms": 113332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 111,
+        "uptime_ms": 114332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 112,
+        "uptime_ms": 115332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 113,
+        "uptime_ms": 116332,
+        "mode": "loose",
+        "prediction": "loose"
+      },
+      {
+        "window_id": 114,
+        "uptime_ms": 117332,
+        "mode": "loose",
+        "prediction": "loose"
+      }
+    ]
+  },
+  "device_seconds": 82.649
+}

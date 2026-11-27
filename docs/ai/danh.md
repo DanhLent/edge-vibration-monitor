@@ -28,3 +28,11 @@
 - Git delivery: only danh/backend-mqtt pushed, authored under DanhLent's verified identity; PR https://github.com/DanhLent/edge-vibration-monitor/pull/2 targets main and remains open for manual review/merge.
 - Required CI passed on 2096a44: Baseline checks and Conventional commits, https://github.com/DanhLent/edge-vibration-monitor/actions/runs/44948727036. The final status-documentation commit must also pass both checks before handoff.
 - Public audit: no private token, database, archive, profile or build binary tracked; both CSV manifests match their published hashes. Firmware/ML and teammate remote branches remain unchanged; no reference drafts were created.
+
+## 2026-11-27 — E2 local integration
+
+AI assisted data inspection, draft model/export and firmware references, Wokwi
+capture tooling, dashboard checks, and evidence review. The model/firmware
+references are Danh-authored local handoffs. The Wokwi browser was used for the
+matched traffic and control measurements after the CLI allowance was exhausted.
+See STATE.md for the measured outcomes and parity conditions.
