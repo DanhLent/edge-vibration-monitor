@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import signal
 import socket
+import struct
 import subprocess
 import sys
 import threading
@@ -29,6 +30,14 @@ class CaptureError(Exception):
 
 
 def decode_message(kind, payload, retained):
+    if kind == "raw":
+        if retained or len(payload) != 517:
+            raise ValueError("invalid raw batch size or retain")
+        boot, window, uptime, batch = struct.unpack_from("<8sIIB", payload)
+        boot_id = boot.decode("ascii")
+        if any(char not in "0123456789abcdef" for char in boot_id) or batch >= 4 or window == 0:
+            raise ValueError("invalid raw batch header")
+        return dict(boot_id=boot_id, window_id=window, uptime_ms=uptime, batch=batch)
     if kind in ("telemetry", "ack") and retained:
         raise ValueError("retained message")
     if kind == "status" and not payload:
@@ -47,8 +56,9 @@ def decode_message(kind, payload, retained):
 
 
 class Observer:
-    def __init__(self, directory, device_id):
+    def __init__(self, directory, device_id, *, raw=False):
         self.base = f"{config.PREFIX}/{device_id}"
+        self.kinds = ("telemetry", "status", "ack", "cmd") + (("raw",) if raw else ())
         self.stream = (Path(directory) / "mqtt.jsonl").open("x")
         self.lock = threading.Lock()
         self.events = []
@@ -72,7 +82,7 @@ class Observer:
     def on_connect(self, client, userdata, flags, reason, properties):
         self.append(dict(event="connect", wall=time.time(), monotonic=time.monotonic(), failed=reason.is_failure))
         if not reason.is_failure:
-            client.subscribe([(self.base + "/" + kind, 1) for kind in ("telemetry", "status", "ack", "cmd")])
+            client.subscribe([(self.base + "/" + kind, 1) for kind in self.kinds])
 
     def on_subscribe(self, client, userdata, mid, reasons, properties):
         if reasons and all(not reason.is_failure for reason in reasons):
@@ -83,7 +93,7 @@ class Observer:
         self.append(dict(event="disconnect", wall=time.time(), monotonic=time.monotonic()))
 
     def record(self, topic, payload, qos=0, retained=False, dup=False, wall=None, monotonic=None):
-        if topic not in [self.base + "/" + kind for kind in ("telemetry", "status", "ack", "cmd")]:
+        if topic not in [self.base + "/" + kind for kind in self.kinds]:
             return
         kind = topic.rsplit("/", 1)[1]
         event = dict(event="message", kind=kind, wall=time.time() if wall is None else wall,
