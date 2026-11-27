@@ -1,5 +1,6 @@
 // Use the documented Wokwi custom-firmware UI with a fresh browser context.
 const fs = require('node:fs');
+const path = require('node:path');
 const { chromium } = require('playwright-core');
 
 async function run() {
@@ -9,6 +10,24 @@ async function run() {
   try {
     const context = await browser.newContext({viewport:{width:1440,height:1000},
       permissions:['clipboard-read','clipboard-write']});
+    const assets = process.env.E2_WOKWI_STATIC_CACHE;
+    if (assets) {
+      const root = path.resolve(assets);
+      const templateFile = path.join(root, "template.html");
+      if (fs.existsSync(templateFile)) {
+        await context.route('https://wokwi.com/projects/305457271083631168?mode=code',
+          route => route.fulfill({path:templateFile, contentType:'text/html; charset=utf-8'}));
+      }
+      await context.route(/^https:\/\/wokwi\.com\/(?:_next\/static|cdn\/monaco-editor)\//, async route => {
+        const name = new URL(route.request().url()).pathname;
+        const file = path.resolve(root, "." + name);
+        if (file.startsWith(root + path.sep) && fs.existsSync(file) && fs.statSync(file).isFile()) {
+          await route.fulfill({path:file});
+        } else {
+          await route.continue();
+        }
+      });
+    }
     const page = await context.newPage();
     const template = 'https://wokwi.com/projects/305457271083631168?mode=code';
     for (let attempt=0; ; ++attempt) {
@@ -23,18 +42,24 @@ async function run() {
     if (diagram !== '-') {
       await page.getByRole('button',{name:'diagram.json',exact:true}).click({position:{x:36,y:12}, force:true});
       const editor = page.locator('.monaco-editor:visible').first();
-      await editor.click({position:{x:220,y:125},force:true});
       const expected = fs.readFileSync(diagram, 'utf8').trim();
-      await page.evaluate(value => navigator.clipboard.writeText(value), expected);
-      await page.keyboard.press('Control+a');
-      await page.keyboard.press('Control+v');
-      const confirmation = page.getByRole('button',{name:/^replace$/i});
-      if (await confirmation.isVisible()) await confirmation.click();
-      await editor.click({position:{x:220,y:125},force:true});
-      await page.keyboard.press('Control+a');
-      await page.keyboard.press('Control+c');
-      if ((await page.evaluate(() => navigator.clipboard.readText())).trim() !== expected) {
-        throw new Error('Wokwi diagram readback differs from the supplied file');
+      const parsed = JSON.stringify(JSON.parse(expected));
+      for (let attempt=0; ; ++attempt) {
+        await editor.click({position:{x:220,y:125},force:true});
+        await page.evaluate(value => navigator.clipboard.writeText(value), expected);
+        await page.keyboard.press('Control+a');
+        await page.keyboard.press('Control+v');
+        const confirmation = page.getByRole('button',{name:/^replace$/i});
+        if (await confirmation.isVisible()) await confirmation.click();
+        await editor.click({position:{x:220,y:125},force:true});
+        await page.evaluate(() => navigator.clipboard.writeText(''));
+        await page.keyboard.press('Control+a');
+        await page.keyboard.press('Control+c');
+        const actual = await page.evaluate(() => navigator.clipboard.readText());
+        try {
+          if (JSON.stringify(JSON.parse(actual)) === parsed) break;
+        } catch {}
+        if (attempt >= 2) throw new Error('Wokwi diagram readback differs from the supplied file');
       }
     }
     await page.locator('.monaco-editor:visible').first().click({position:{x:220,y:125},force:true});
@@ -118,8 +143,10 @@ async function captureDashboard(url, screenshot, device, expectedModel) {
       !document.querySelector('#chart').hidden, mode==='loose'?'Loose mounting':'Imbalance', {timeout:10000});
     if (expectedModel) {
       await page.locator('#field').selectOption('p2x');
-      const history = await page.request.get(url+'/api/v1/devices/'+device+'/telemetry?field=p2x').then(res=>res.json());
-      if (!history.some(point=>Math.abs(point.v-deviceWindow.spectrum.p2x)<1e-8))
+      const now = Date.now()/1000;
+      const history = await page.request.get(url+'/api/v1/devices/'+device+'/telemetry',
+        {params:{field:'p2x',from:now-300,to:now}}).then(res=>res.json());
+      if (!Array.isArray(history) || !history.some(point=>Math.abs(point.v-deviceWindow.spectrum.p2x)<1e-8))
         throw new Error('Spectral history is missing the correlated window');
       await page.waitForFunction(() => !document.querySelector('#chart').hidden &&
         document.querySelector('#spectrum').textContent.includes('FFT runtime'));

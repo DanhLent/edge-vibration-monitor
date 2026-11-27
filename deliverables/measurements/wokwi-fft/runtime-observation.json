@@ -1,0 +1,21 @@
+{
+  "engine": "Wokwi web",
+  "source": "synthetic virtual X-axis samples",
+  "status": "diagnostic; matched traffic and timer acceptance tracked separately",
+  "valid_serial_windows": {
+    "normal": 11,
+    "imbalance": 5,
+    "loose": 32
+  },
+  "first_transform_us": 81342,
+  "warm_us_median": 53117,
+  "warm_us_min": 50426,
+  "warm_us_max": 54541,
+  "binary_sha256": "391e384bcfa56744af81344ddfd378022d21dda112aff5ee29190a4f4ab9111c",
+  "fft_build_flash_bytes": 1028935,
+  "fft_build_static_ram_bytes": 72916,
+  "time_domain_build_flash_bytes": 1022723,
+  "time_domain_build_static_ram_bytes": 52876,
+  "fft_workspace_bytes": 16000,
+  "capture_buffers_bytes": 4000
+}

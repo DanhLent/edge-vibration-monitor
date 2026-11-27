@@ -145,3 +145,8 @@ same window as the correlated command ACK. The raw observer checks received
 batches against produced windows. Use the raw and event summaries to reproduce
 the measured byte ratio. Preserve both intervals, actual frame counts, and
 browser or simulator failures in private scratch output.
+
+If Wokwi's static editor assets load slowly, `E2_WOKWI_STATIC_CACHE` may point
+to an ignored directory containing official cached files at their URL paths.
+The public template document can be cached as `template.html`. The simulator
+runs in the browser and connects through the normal Wokwi public gateway.

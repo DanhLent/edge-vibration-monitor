@@ -1,11 +1,11 @@
 # STATE — CE339 N06 / E2
-Updated: 2026-11-27
+Updated: 2026-11-28
 Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
 Verified GitHub: Danh @DanhLent; Nhat @GreenyB (API login Greenyb); Dat @nguyenngac214.
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: PRs #1–#4 merged. Official TH5 received. Teammate write invitations remain pending.
+Current phase: Public integration and spectral telemetry backend merged. Official TH5 received. Teammate write invitations remain pending.
 Public main keeps the reviewed baseline while the TH5 firmware and model are developed and tested on local drafts.
 
 ## Initialization
@@ -42,7 +42,9 @@ Public main keeps the reviewed baseline while the TH5 firmware and model are dev
 - [x] Verify 100% ESP32/Python inference parity on Wokwi probes and private emulator holdout vectors.
 - [x] Report temporal and grouped-random macro F1, confusion matrices, and always-normal results.
 - [x] Verify event/heartbeat publishing and ≥10× payload reduction against a matched Wokwi raw baseline.
-- [ ] Implement/evaluate FFT features while preserving the mandatory tree baseline.
+- [x] Implement and evaluate FFT features while preserving the mandatory tree baseline.
+- [x] Verify live FFT dashboard, event heartbeat, and a conservative ≥10× Wokwi traffic bound.
+- [ ] Repeat the matched FFT raw traffic run with complete automatic Serial capture.
 - [ ] Validate on a physical ESP32/MPU6050 kit and capture hardware evidence.
 - [ ] Finish CSV results, parity table, training notebook, and limitations analysis.
 - [ ] Finish final PDF, slides, dashboard evidence, 3–5-minute video, README, and AI log.
@@ -62,12 +64,27 @@ Public main keeps the reviewed baseline while the TH5 firmware and model are dev
   loose-mount class had one true positive out of 1,080 windows.
 - Parity was 12,188/12,188 on Wokwi ESP32 independent probes and
   7,797/7,797 on private held-out and boundary vectors in host C and
-  Espressif QEMU. Physical-kit verification and FFT remain pending.
+  Espressif QEMU. Physical-kit verification is pending.
 
 Published evidence: [dashboard](deliverables/dashboard/wokwi-th5/README.md),
 [traffic and circuit](deliverables/measurements/wokwi-th5-traffic/README.md).
 The trained source and runnable simulator project are local handoffs.
 The public checkout uses the bootstrap firmware until member-owned PRs land.
+
+## Local advanced FFT verification
+
+- Locked temporal/grouped-random macro F1 reached 0.7591/0.7986. The
+  mandatory tree C export is unchanged and remains selectable.
+- Private ESP32 replay matched NumPy on both bands for all 60 TH5 raw
+  windows. Wokwi matched 6,018 independent C/Python inference probes.
+- The diagnostic Wokwi capture exercised all three calibrated classes.
+  [FFT evidence](deliverables/measurements/wokwi-fft/README.md) records the
+  measured transform timing, resource delta, and acceptance status. A separate
+  Wokwi 1 kHz timer test measured zero missed notifications in both phases.
+- Live dashboard control reported a correlated ACK and spectral history on
+  the same boot. Measured event data and a conservative raw lower bound
+  establish at least 13.27× lower payload rate. The complete automatic raw
+  replay remains open.
 
 ## Historical pre-TH5 next action
 Complete one bounded CLI liveness check before further Wokwi/browser captures; retain local drafts and export offline handoffs if boot remains blocked.
