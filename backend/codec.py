@@ -1,4 +1,4 @@
-"""Validate the v1 wire contract before storage or command completion."""
+"""Validate the E2 wire contracts before storage or command completion."""
 import json
 import math
 import re
@@ -13,11 +13,11 @@ INTEGER_FIELDS = ("uptime_ms", "window_id", "fs_hz", "sample_count", "missed_sam
 RESULTS = ("done", "bad", "expired", "clock", "unsupported")
 
 
-def decode_object(payload):
+def decode_object(payload, versions=(1,)):
     value = json.loads(payload.decode("utf-8"))
     if not isinstance(value, dict):
         raise ValueError("message must be an object")
-    if type(value.get("schema_version")) is not int or value["schema_version"] != 1:
+    if type(value.get("schema_version")) is not int or value["schema_version"] not in versions:
         raise ValueError("unsupported schema version")
     boot = value.get("boot_id")
     if not isinstance(boot, str) or not BOOT_ID.fullmatch(boot):
@@ -27,7 +27,7 @@ def decode_object(payload):
 
 def require_keys(value, keys):
     if set(value) != set(keys):
-        raise ValueError("fields do not match the v1 contract")
+        raise ValueError("fields do not match the message contract")
 
 
 def validate_source(value):
@@ -38,9 +38,11 @@ def validate_source(value):
 
 
 def decode_telemetry(payload):
-    value = decode_object(payload)
+    value = decode_object(payload, (1, 2))
     keys = ("schema_version", "boot_id", "ts", *INTEGER_FIELDS, *NUMERIC_FIELDS,
             "source", "mode", "prediction", "sensor_ok", "model_ready")
+    if value["schema_version"] == 2:
+        keys += ("spectrum", "model_variant")
     require_keys(value, keys)
     for key in NUMERIC_FIELDS:
         number = value[key]
@@ -78,7 +80,34 @@ def decode_telemetry(payload):
         raise ValueError("a zero RMS signal must have zero peak")
     if not math.isclose(value["crest_factor"], expected_crest, rel_tol=1e-4, abs_tol=1e-6):
         raise ValueError("crest factor does not match peak/RMS")
+    if value["schema_version"] == 2:
+        validate_spectrum(value)
     return value
+
+
+def validate_spectrum(value):
+    spectrum = value["spectrum"]
+    variant = value["model_variant"]
+    if (value["model_ready"] and variant not in ("baseline", "fft")
+            or not value["model_ready"] and variant is not None
+            or variant == "fft" and spectrum is None):
+        raise ValueError("model variant and spectral readiness disagree")
+    if spectrum is None:
+        return
+    if not isinstance(spectrum, dict):
+        raise ValueError("spectrum must be an object or null")
+    require_keys(spectrum, ("p1x", "p2x", "fft_us"))
+    if (value["fs_hz"] != 1000 or value["sample_count"] != 1000
+            or not 1_000_000 <= value["window_duration_us"] <= 1_002_000):
+        raise ValueError("spectrum requires a valid 1 kHz window")
+    for key in ("p1x", "p2x"):
+        datum = spectrum[key]
+        if type(datum) not in (float, int) or not math.isfinite(datum) or datum < 0:
+            raise ValueError("invalid spectral band power")
+    if spectrum["p1x"] + spectrum["p2x"] > value["rms"]**2 * 1.0001 + 1e-8:
+        raise ValueError("band powers exceed total signal power")
+    if type(spectrum["fft_us"]) is not int or not 0 <= spectrum["fft_us"] < 1_000_000:
+        raise ValueError("invalid FFT runtime")
 
 
 def decode_status(payload):

@@ -1,4 +1,4 @@
-# Baseline interface contract — v1
+# E2 interface contract
 
 Leads: Danh (backend/MQTT), Dat (firmware), Nhat (model). Review every affected lead before changing
 wire fields, feature definitions, labels, or C inference. Shared examples: `tests/fixtures/interfaces.json`.
@@ -23,8 +23,8 @@ broker retention and is ignored by ingestion.
 
 ## Telemetry
 
-All fields below are required; unsupported versions and extra fields are rejected. Coordinate a
-versioned contract change before adding FFT data. `boot_id` is eight lowercase hexadecimal digits,
+Version 1 uses the fields below. Version 2 adds the FFT fields documented after this table.
+Both versions reject unknown fields. Status, commands and ACKs retain version 1. `boot_id` is eight lowercase hexadecimal digits,
 generated at boot; `window_id` increases within that boot.
 
 | Fields | Definition |
@@ -39,6 +39,15 @@ generated at boot; `window_id` increases within that boot.
 | `source`, `mode` | `synthetic` with normal/imbalance/loose; `mpu6050` with null mode |
 | `sensor_ok` | All MPU6050 reads included in this window succeeded; failed physical windows are discarded |
 | `model_ready`, `prediction` | False/null until validated inference; true requires a known class |
+
+FFT-capable firmware sends telemetry schema version 2. The required `spectrum`
+field contains `p1x` and `p2x` in g², plus integer `fft_us` for the transform
+duration, or null when there is no reliable spectrum. Non-null bands require
+1,000 samples at 1 kHz and a duration between 1,000,000 and 1,002,000 µs.
+Band powers are the one-sided sums (2|X[k]|²/N²) of the centered X-axis FFT
+over inclusive bins 20–30 and 45–55. `model_variant` is `fft` for an FFT tree
+prediction, `baseline` for an RMS/peak prediction, and null when unavailable.
+A baseline prediction may still accompany a valid measured spectrum.
 
 Features use RMS = sqrt(sum(x²)/N), peak = max(abs(x)), crest = peak/RMS or zero at RMS zero.
 Current acceleration units are **g, provisional**, from raw X-axis int16/16384. No gravity/DC removal
@@ -104,7 +113,7 @@ measurements for the new mode arrive after a complete window. It does not confir
 
 - `GET /api/v1/devices`: current state, readiness, live/measurement times, current boot's latest window.
 - `GET /api/v1/devices/{id}/latest`: latest current-boot window or 404.
-- `GET /api/v1/devices/{id}/telemetry?from=&to=&field=`: receipt-time series; Unix seconds or timezone-aware ISO timestamps; fields RMS/peak/crest_factor.
+- `GET /api/v1/devices/{id}/telemetry?from=&to=&field=`: receipt-time series; Unix seconds or timezone-aware ISO timestamps; fields `rms`, `peak`, `crest_factor`, `p1x`, and `p2x`. Spectral history omits windows without a spectrum.
 - `POST /api/v1/devices/{id}/commands`: `{ "action":"set_mode", "mode":"loose" }`; 202 with command ID/state/expiry after persistence. Initial publish failure remains a 202 failed resource.
 - `GET /api/v1/commands/{id}` and `/api/v1/commands`: persisted lifecycle; reads expire overdue commands.
 - `GET /api/v1/stats`: stored windows, received telemetry messages/payload bytes, rejected messages, broker state, and logs.
