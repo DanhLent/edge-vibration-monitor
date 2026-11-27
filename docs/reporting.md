@@ -126,7 +126,8 @@ custom-firmware template. Use `--web --button` for interactive button evidence.
 `--profile full` checks all three modes, or select one mode per run to fit the CLI time limit.
 For traffic, build the same combined source with `EVM_PUBLISH_MODE` set to 0, 1, or 2 for
 event, periodic, or raw. Run `--profile traffic --publish event|periodic|raw` with the
-matching binary, one Wokwi run at a time. It issues the same three commands at fixed
+matching binary. Run sequentially when using one device ID. For concurrent runs, use
+distinct same-length identifiers with `EVM_DEVICE_ID` and the matching `--device` option. It issues the same three commands at fixed
 device-clock checkpoints and tracks an 82-device-second interval from the normal baseline.
 The raw observer retains only batch headers and byte counts. Compare the reviewed summaries and
 keep private databases, full logs, account files, and raw samples in ignored storage.

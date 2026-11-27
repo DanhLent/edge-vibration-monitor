@@ -3,8 +3,8 @@ const fs = require('node:fs');
 const { chromium } = require('playwright-core');
 
 async function run() {
-  const [binary, diagram, done, screenshot, dashboard] = process.argv.slice(2);
-  if (dashboard) return captureDashboard(dashboard, screenshot);
+  const [binary, diagram, done, screenshot, dashboard, device] = process.argv.slice(2);
+  if (dashboard) return captureDashboard(dashboard, screenshot, device);
   const browser = await chromium.launch({executablePath: process.env.E2_BROWSER || undefined});
   try {
     const context = await browser.newContext({viewport:{width:1440,height:1000},
@@ -60,29 +60,30 @@ async function run() {
   } finally { await browser.close(); }
 }
 
-async function captureDashboard(url, screenshot) {
+async function captureDashboard(url, screenshot, device) {
   const browser = await chromium.launch({executablePath: process.env.E2_BROWSER || undefined});
   try {
     const page = await browser.newPage({viewport:{width:1360,height:950}});
     await page.goto(url);
+    await page.locator('#device').selectOption(device);
     await page.waitForFunction(() => !document.querySelector('#apply').disabled, null, {timeout:45000});
-    const before = await page.request.get(url+'/api/v1/devices/esp32-01/latest').then(res=>res.json());
+    const before = await page.request.get(url+'/api/v1/devices/'+device+'/latest').then(res=>res.json());
     const mode = before.mode === 'imbalance' ? 'loose' : 'imbalance';
     await page.locator('#mode').selectOption(mode);
     const commandResponse = page.waitForResponse(res => res.request().method()==='POST' && res.url().endsWith('/commands'));
     await page.locator('#apply').click();
     const command = await (await commandResponse).json();
-    await page.waitForFunction(async ({command, before, mode}) => {
+    await page.waitForFunction(async ({command, before, mode, device}) => {
       const [ack, latest] = await Promise.all([
         fetch('/api/v1/commands/'+command.command_id).then(res=>res.json()),
-        fetch('/api/v1/devices/esp32-01/latest').then(res=>res.json())
+        fetch('/api/v1/devices/'+device+'/latest').then(res=>res.json())
       ]);
       return ack.state==='done' && ack.result==='done' && latest.boot_id===before.boot_id &&
         latest.window_id>before.window_id && latest.mode===mode && latest.model_ready &&
         latest.prediction===mode && document.querySelector('#commandState').textContent.startsWith('Command done') &&
         document.querySelector('#prediction').textContent.trim()===(mode==='loose'?'Loose mounting':'Imbalance') &&
         !document.querySelector('#chart').hidden;
-    }, {command,before,mode}, {timeout:45000});
+    }, {command,before,mode,device}, {timeout:45000});
     await page.screenshot({path:screenshot,fullPage:true});
     console.log(JSON.stringify({id:command.command_id,mode,before:before.window_id,boot:before.boot_id}));
   } finally { await browser.close(); }

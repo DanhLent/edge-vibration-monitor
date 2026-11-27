@@ -77,7 +77,7 @@ def capture(args):
               "diagram_sha256": sha256(args.diagram), "commands": [], "result": "INCOMPLETE"}
     browser = ROOT / "scripts/wokwi_browser.cjs"
     boot = None
-    observer = Observer(result_dir, "esp32-01", raw=True)
+    observer = Observer(result_dir, args.device, raw=True)
 
     def until(predicate, timeout, label):
         stop = time.monotonic() + timeout
@@ -110,7 +110,7 @@ def capture(args):
                         return False
 
                 def device():
-                    return next((row for row in http.get("/api/v1/devices").json() if row["id"] == "esp32-01"), {})
+                    return next((row for row in http.get("/api/v1/devices").json() if row["id"] == args.device), {})
 
                 def ready():
                     row = device()
@@ -125,7 +125,7 @@ def capture(args):
 
                 def set_mode(mode):
                     before = latest_serial()
-                    response = http.post("/api/v1/devices/esp32-01/commands", json={"action":"set_mode", "mode":mode})
+                    response = http.post(f"/api/v1/devices/{args.device}/commands", json={"action":"set_mode", "mode":mode})
                     response.raise_for_status()
                     resource = response.json()
 
@@ -205,7 +205,7 @@ def capture(args):
                                                          "rms_g":first[4], "peak_g":first[5]}
                         print(f"{mode}: {len(rows)} verified Wokwi windows", flush=True)
                     if args.dashboard:
-                        capture = subprocess.run(["node", str(browser), "-", "-", "-", str(result_dir/"dashboard.png"), url],
+                        capture = subprocess.run(["node", str(browser), "-", "-", "-", str(result_dir/"dashboard.png"), url, args.device],
                                                  env=environment, text=True, stdout=subprocess.PIPE, stderr=sim_log,
                                                  timeout=70, check=True)
                         report["dashboard"] = json.loads(capture.stdout)
@@ -260,6 +260,7 @@ def main():
     parser.add_argument("--dashboard", action="store_true")
     parser.add_argument("--button", action="store_true")
     parser.add_argument("--web", action="store_true")
+    parser.add_argument("--device", default="esp32-01")
     raise SystemExit(capture(parser.parse_args()))
 
 
