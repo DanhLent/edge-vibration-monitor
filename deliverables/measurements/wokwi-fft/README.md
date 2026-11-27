@@ -43,10 +43,17 @@ MQTT ACK, spectral history, and a newer same-boot FFT prediction. The
 feature heartbeat over 82.437 device seconds, with 4,783 received payload
 bytes including status, commands, and ACKs.
 
-The raw run reached the end of the same three-command schedule but lost
-some Serial fields in browser collection. The [conservative comparison](raw-traffic-lower-bound.json)
-counts only 140 distinct observed raw batches after warmup. At least
-72,380 raw payload bytes were captured in at most 94 device seconds.
-Even with that longer envelope and all raw-side control traffic omitted,
-the observed raw payload rate was at least **13.27×** the event rate.
-A fresh, fully automated paired raw run remains open.
+The final [matched comparison](traffic.csv) measured **34.13×**
+lower payload rate (**97.07% reduction**). The [raw run](raw.json)
+captured 309 distinct batches and
+163,677 payload bytes over 82.663
+device seconds, with 96.56% batch coverage.
+Both totals include status, commands, and ACKs. Both runs used the same circuit
+and command schedule. The raw build also reported correct FFT class outputs in
+all three calibrated modes (13 normal, 6
+imbalance, and 69 loose Serial windows). An earlier partial
+run provided the [conservative traffic bound](raw-traffic-lower-bound.json).
+
+The [baseline-selector run](baseline-selector.json) used the virtual button.
+The mandatory tree produced the three expected diagnoses while both band
+powers remained available.

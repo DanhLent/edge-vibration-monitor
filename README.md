@@ -17,8 +17,8 @@ Those measurements use the offline TH5 firmware and model handoffs.
 
 The local FFT extension preserves the mandatory tree and adds spectral
 telemetry, two band histories, and the active model on the dashboard.
-See [FFT evidence](deliverables/measurements/wokwi-fft/README.md) for measured
-results and outstanding Wokwi checks.
+See [FFT evidence](deliverables/measurements/wokwi-fft/README.md) for live Wokwi
+results and the locked-split evaluation.
 
 ## Start the backend
 

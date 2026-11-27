@@ -43,8 +43,7 @@ Public main keeps the reviewed baseline while the TH5 firmware and model are dev
 - [x] Report temporal and grouped-random macro F1, confusion matrices, and always-normal results.
 - [x] Verify event/heartbeat publishing and ≥10× payload reduction against a matched Wokwi raw baseline.
 - [x] Implement and evaluate FFT features while preserving the mandatory tree baseline.
-- [x] Verify live FFT dashboard, event heartbeat, and a conservative ≥10× Wokwi traffic bound.
-- [ ] Repeat the matched FFT raw traffic run with complete automatic Serial capture.
+- [x] Verify live FFT dashboard, baseline selection, event heartbeat, and ≥10× paired Wokwi traffic reduction.
 - [ ] Validate on a physical ESP32/MPU6050 kit and capture hardware evidence.
 - [ ] Finish CSV results, parity table, training notebook, and limitations analysis.
 - [ ] Finish final PDF, slides, dashboard evidence, 3–5-minute video, README, and AI log.
@@ -82,9 +81,9 @@ The public checkout uses the bootstrap firmware until member-owned PRs land.
   measured transform timing, resource delta, and acceptance status. A separate
   Wokwi 1 kHz timer test measured zero missed notifications in both phases.
 - Live dashboard control reported a correlated ACK and spectral history on
-  the same boot. Measured event data and a conservative raw lower bound
-  establish at least 13.27× lower payload rate. The complete automatic raw
-  replay remains open.
+  the same boot. Paired Wokwi runs measured 34.13× lower MQTT payload rate.
+- The virtual button verified the mandatory model in all three modes while
+  spectral telemetry stayed enabled.
 
 ## Historical pre-TH5 next action
 Complete one bounded CLI liveness check before further Wokwi/browser captures; retain local drafts and export offline handoffs if boot remains blocked.

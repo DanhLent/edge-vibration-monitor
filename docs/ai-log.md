@@ -28,4 +28,4 @@ split comparison, C export, spectral telemetry v2, dashboard, and Wokwi
 measurement tools. Danh authored the local reference drafts. Official
 rows and benchmark images containing them remain in ignored storage.
 See the [FFT evidence](../deliverables/measurements/wokwi-fft/README.md)
-for simulator results and open verification gates.
+for simulator results and verification limits.
