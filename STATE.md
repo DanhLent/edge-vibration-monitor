@@ -32,16 +32,16 @@ Public main keeps the reviewed baseline while the TH5 firmware and model are dev
 - [ ] Submit the 4–6-page report and initial Wokwi link; prepare a 5-minute presentation.
 
 ## Milestone 2 — Week 11 (30%)
-- [ ] Verify device → MQTT → backend/dashboard and dashboard → device acknowledgments.
+- [x] Verify local Wokwi device → MQTT → dashboard and dashboard → device acknowledgments.
 - [ ] Record sampling/publish timing and command latency in CSV.
-- [ ] Prepare and document the AI dataset and evaluation split.
+- [x] Document official TH5 provenance and evaluation splits in the local ML handoff.
 - [ ] Submit Wokwi link, source, measurement CSV, and short demo; rehearse individual questions.
 
 ## Milestone 3 — Weeks 14–15 (40%)
-- [ ] Train/export the depth-3 RMS/peak tree; deploy classification and state LEDs.
-- [ ] Verify 100% ESP32/Python test-vector agreement, including threshold boundaries.
-- [ ] Report temporal F1 and always-normal baseline; compare splits/confusion matrices.
-- [ ] Verify event/heartbeat publishing and >= 10x reduction against a defined raw baseline.
+- [x] Train/export the depth-3 RMS/peak tree and verify classification and LED behavior in the local Wokwi build.
+- [x] Verify 100% ESP32/Python inference parity on Wokwi probes and private emulator holdout vectors.
+- [x] Report temporal and grouped-random macro F1, confusion matrices, and always-normal results.
+- [x] Verify event/heartbeat publishing and ≥10× payload reduction against a matched Wokwi raw baseline.
 - [ ] Implement/evaluate FFT features while preserving the mandatory tree baseline.
 - [ ] Validate on a physical ESP32/MPU6050 kit and capture hardware evidence.
 - [ ] Finish CSV results, parity table, training notebook, and limitations analysis.
