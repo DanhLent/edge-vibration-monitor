@@ -9,6 +9,7 @@ import re
 import shutil
 import socket
 import stat
+import statistics
 import subprocess
 import sys
 import time
@@ -20,14 +21,16 @@ from scripts.export_measurements import sha256, write_json
 
 TOPICS = ("raw", "telemetry", "status", "cmd", "ack")
 MODES = ("normal", "imbalance", "loose")
-SERIAL = re.compile(r"^E2_WINDOW,(\d+),(\d+),(\w+),(-?\d+),(\d+\.\d+),(\d+\.\d+),([01])$", re.M)
+SERIAL = re.compile(r"^E2_WINDOW,(\d+),(\d+),(\w+),(-?\d+),(\d+\.\d+),(\d+\.\d+),([01])(?:,(\d+\.\d+),(\d+\.\d+),(\d+),([01]))?\s*$", re.M)
 
 
 def serial_windows(path):
     if not path.exists():
         return []
-    return [(int(window), int(uptime), mode, int(prediction), float(rms), float(peak), bool(int(sensor)))
-            for window, uptime, mode, prediction, rms, peak, sensor in
+    return [(int(window), int(uptime), mode, int(prediction), float(rms), float(peak), bool(int(sensor)),
+             float(p1) if p1 else None, float(p2) if p2 else None, int(usec) if usec else None,
+             bool(int(fft_model)) if fft_model else False)
+            for window, uptime, mode, prediction, rms, peak, sensor, p1, p2, usec, fft_model in
             SERIAL.findall(path.read_text(errors="replace"))]
 
 
@@ -53,6 +56,8 @@ def summarize(events, start, stop, boot):
             raw_batches.add((message["window_id"], message["batch"]))
         elif kind == "telemetry":
             telemetry.append({key: message[key] for key in ("window_id", "uptime_ms", "mode", "prediction")})
+            if message["schema_version"] == 2:
+                telemetry[-1].update(spectrum=message["spectrum"], model_variant=message["model_variant"])
     return {"messages_by_topic": dict(counts), "payload_bytes_by_topic": dict(sizes),
             "messages": sum(counts.values()), "payload_bytes": sum(sizes.values()),
             "unique_raw_batches": len(raw_batches), "telemetry": telemetry}
@@ -149,7 +154,8 @@ def capture(args):
                     try:
                         simulator = subprocess.Popen(["node", str(browser), str(binary), str(args.diagram.resolve()),
                                                       str(done), str(result_dir / "wokwi.png")],
-                                                     stdout=console, stderr=sim_log, env=environment)
+                                                     stdout=console, stderr=sim_log,
+                                                     env={**environment, "E2_EXPECT_SPECTRUM": str(int(bool(args.expect_model)))})
                     finally:
                         console.close()
                 else:
@@ -170,7 +176,18 @@ def capture(args):
                 if args.profile != "circuit":
                     info = until(ready, args.startup, "trained Wokwi device readiness")
                     boot = report["boot_id"] = info["boot_id"]
-                until(latest_serial, 25, "Wokwi serial windows")
+                until(latest_serial, args.startup, "Wokwi serial windows")
+
+                def check_spectrum(rows):
+                    if args.expect_model and any(
+                            row[9] is None or row[10] != (args.expect_model == "fft")
+                            or row[7] + row[8] > row[4] ** 2 + 1e-7 for row in rows):
+                        raise CaptureError("Spectral features or active model mismatch")
+                    times = [row[9] for row in rows if row[9] is not None]
+                    if times:
+                        return {"fft_us_min": min(times), "fft_us_median": statistics.median(times),
+                                "fft_us_max": max(times)}
+                    return {}
 
                 def after(start, seconds, *, windows=0):
                     return until(lambda: (row := latest_serial()) and row[1] >= start[1] + seconds * 1000
@@ -191,12 +208,21 @@ def capture(args):
                     after(anchor, 10)
                     set_mode("loose")
                     end = after(anchor, 82)
+                    sample_rows = [row for row in serial_windows(serial) if anchor[0] <= row[0] <= end[0]]
+                    report["timing"] = check_spectrum(sample_rows)
                     report["traffic"] = summarize(observer.snapshot(), start, time.monotonic(), boot)
                     report["device_seconds"] = (end[1]-anchor[1])/1000
-                    if args.publish == "raw" and report["traffic"]["unique_raw_batches"] < 320:
-                        raise CaptureError("Raw capture received fewer than 320 distinct batches")
+                    if args.publish == "raw":
+                        batches = report["traffic"]["unique_raw_batches"]
+                        expected = 4 * (end[0] - anchor[0])
+                        report["traffic"]["raw_batch_coverage"] = batches / expected
+                        if batches < .90 * expected:
+                            raise CaptureError("Raw capture lost more than 10% of produced batches")
                     if args.publish == "event":
                         sent = report["traffic"]["telemetry"]
+                        if args.expect_model and any(row.get("model_variant") != args.expect_model or
+                                                     row.get("spectrum") is None for row in sent):
+                            raise CaptureError("Event payload did not carry the expected spectral inference")
                         if (not {"imbalance", "loose"}.issubset(row["prediction"] for row in sent) or
                                 not any(a["prediction"] == b["prediction"] and b["uptime_ms"]-a["uptime_ms"] >= 60000
                                         for a,b in zip(sent, sent[1:]))):
@@ -218,10 +244,13 @@ def capture(args):
                                 any(row[2] != mode or row[3] != MODES.index(mode) or not row[6] for row in rows)):
                             raise CaptureError(f"Missing, misclassified, or unhealthy {mode} windows")
                         report["mode_evidence"][mode] = {"seconds": (last[1]-first[1])/1000, "windows":len(rows),
-                                                         "rms_g":first[4], "peak_g":first[5]}
+                                                         "rms_g":first[4], "peak_g":first[5],
+                                                         **check_spectrum(rows)}
+                        if first[7] is not None:
+                            report["mode_evidence"][mode].update(p1x_g2=first[7], p2x_g2=first[8])
                         print(f"{mode}: {len(rows)} verified Wokwi windows", flush=True)
                     if args.dashboard:
-                        capture = subprocess.run(["node", str(browser), "-", "-", "-", str(result_dir/"dashboard.png"), url, args.device],
+                        capture = subprocess.run(["node", str(browser), "-", "-", "-", str(result_dir/"dashboard.png"), url, args.device, args.expect_model or ""],
                                                  env=environment, text=True, stdout=subprocess.PIPE, stderr=sim_log,
                                                  timeout=70, check=True)
                         report["dashboard"] = json.loads(capture.stdout)
@@ -231,7 +260,9 @@ def capture(args):
                         if (screenshot_ack["state"] != "done" or screenshot_ack["result"] != "done" or
                                 screenshot_latest["boot_id"] != decision["boot"] or
                                 screenshot_latest["window_id"] < decision["window"] or
-                                screenshot_latest["prediction"] != decision["mode"]):
+                                screenshot_latest["prediction"] != decision["mode"] or
+                                args.expect_model and (screenshot_latest.get("model_variant") != args.expect_model or
+                                                       screenshot_latest.get("spectrum") is None)):
                             raise CaptureError("Dashboard screenshot evidence failed post-capture correlation")
                 if args.button:
                     if not args.web:
@@ -258,7 +289,8 @@ def capture(args):
             rows = serial_windows(serial)
             with (result_dir / "windows.csv").open("w", newline="") as stream:
                 writer = csv.writer(stream, lineterminator="\n")
-                writer.writerow(("window_id", "device_uptime_ms", "mode", "prediction_id", "rms_g", "peak_g", "sensor_ok"))
+                writer.writerow(("window_id", "device_uptime_ms", "mode", "prediction_id", "rms_g", "peak_g", "sensor_ok",
+                                 "p1x_g2", "p2x_g2", "fft_us", "fft_model"))
                 writer.writerows(rows)
             write_json(result_dir / "summary.json", report)
     print(json.dumps(report, indent=2))
@@ -279,6 +311,7 @@ def main():
     parser.add_argument("--button", action="store_true")
     parser.add_argument("--web", action="store_true")
     parser.add_argument("--device", default="esp32-01")
+    parser.add_argument("--expect-model", choices=("baseline", "fft"))
     args = parser.parse_args()
     if (args.button or args.profile == "circuit") and not args.web:
         parser.error("Button/circuit checks use the Wokwi browser")

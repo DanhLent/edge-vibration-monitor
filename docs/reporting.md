@@ -134,3 +134,14 @@ device-clock checkpoints and tracks an 82-device-second interval from the normal
 The raw observer retains only batch headers and byte counts. Compare the reviewed summaries and
 compute the normalized payload ratio with
 `python -m scripts.compare_e2_traffic RAW.json EVENT.json --periodic PERIODIC.json` with the periodic run optional. Keep private databases, full logs, account files, and raw samples in ignored storage.
+
+## FFT acceptance capture
+
+Use `--expect-model fft` for the trained FFT build and `--expect-model baseline`
+to check the baseline selector with spectral extraction still enabled. Serial
+rows include both band powers, transform time in microseconds, and the active
+model. In the browser dashboard capture, the 45–55 Hz history must include the
+same window as the correlated command ACK. The raw observer checks received
+batches against produced windows. Use the raw and event summaries to reproduce
+the measured byte ratio. Preserve both intervals, actual frame counts, and
+browser or simulator failures in private scratch output.
