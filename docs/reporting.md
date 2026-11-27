@@ -113,3 +113,20 @@ Review CSVs, hashes, conditions, source identity and findings before copying sel
 to `deliverables/measurements/<run-id>/` using `--output`. Keep raw observer/Serial/browser logs,
 SQLite, token files, profiles, build binaries and PCAP under ignored locations. Never export an
 old lab database. Preserve failed runs; never replace Wokwi results with software-peer fixtures.
+
+## Trained Wokwi acceptance
+
+Use `python -m scripts.e2_capture BINARY DIAGRAM OUTPUT` with the locally combined firmware
+and model. Give each run a fresh ignored output directory. Use `--wokwi-cli PATH` and a
+mode-600 `--token-file`. A local Playwright Chromium or Edge installation with
+`playwright-core` on Node's module search path enables `--dashboard`. Set `E2_BROWSER`
+to the browser executable when using a system browser. `--web` uses the documented Wokwi
+custom-firmware template. Use `--web --button` for interactive button evidence.
+
+`--profile full` checks all three modes, or select one mode per run to fit the CLI time limit.
+For traffic, build the same combined source with `EVM_PUBLISH_MODE` set to 0, 1, or 2 for
+event, periodic, or raw. Run `--profile traffic --publish event|periodic|raw` with the
+matching binary, one Wokwi run at a time. It issues the same three commands at fixed
+device-clock checkpoints and tracks an 82-device-second interval from the normal baseline.
+The raw observer retains only batch headers and byte counts. Compare the reviewed summaries and
+keep private databases, full logs, account files, and raw samples in ignored storage.

@@ -1,7 +1,7 @@
 # Git workflow and ownership
 
 Repository: [DanhLent/edge-vibration-monitor](https://github.com/DanhLent/edge-vibration-monitor).
-Maintainer: Danh (`@DanhLent`). Nhat GitHub: **TODO — verified handle**. Dat GitHub: **TODO — verified handle**.
+Maintainer: Danh (`@DanhLent`). Nhat: `@GreenyB` (API login `Greenyb`). Dat: `@nguyenngac214`.
 
 | Lead | Owned functionality | Reviewer |
 | --- | --- | --- |
@@ -18,13 +18,10 @@ by Nhat. Put model CODEOWNERS rules after the general firmware rule because the 
 
 1. Danh creates the public repository and commits the reviewed AI-assisted scaffold using his own verified Git identity.
 2. CI runs `Baseline checks` and `Conventional commits`. Protect main after these contexts exist: require PRs, checks, resolved conversations, and prohibit force pushes/deletion. Allow merge commits; disable squash and rebase merging.
-3. During solo bootstrap, require zero approvals and leave code-owner review disabled. Bootstrap ownership is Danh; commented TODOs stand in for missing member handles.
-4. TODO(Danh): obtain Nhat/Dat's verified handles, invite each with write access, and have them accept invitations.
-5. Replace commented placeholders with active lead/reviewer pairs, including tests and shared docs. Include a second eligible owner wherever the lead may author the PR.
-6. Enable one non-author approving review, dismiss stale approvals after new commits, and require code-owner review. Authors cannot approve their own PR.
-
-CODEOWNERS can require an eligible owner's approval, but does not enforce every affected lead's
-approval. For shared contracts, collect all affected leads' agreement in the PR before merging.
+3. The verified write invitations for Dat and Nhat are pending. Each teammate accepts and verifies their own account.
+4. Keep one lead per path in CODEOWNERS. Once both have accepted, verify write access and CODEOWNERS diagnostics.
+   Require one non-author approval when onboarding is complete. Keep mandatory CODEOWNERS review disabled
+   while each path has one lead. Request the reviewers listed above and record agreement from affected leads.
 
 ## Branches and commits
 

@@ -1,11 +1,12 @@
 # STATE — CE339 N06 / E2
-Updated: 2026-11-24
+Updated: 2026-11-27
 Members: Danh (Backend/MQTT), Nhat (ML/FFT), Dat (Firmware/Wokwi).
 Verified GitHub: Danh @DanhLent; Nhat @GreenyB (API login Greenyb); Dat @nguyenngac214.
 Target: advanced level via FFT; Wokwi first, physical-kit validation later.
 Stack: Arduino ESP32 + MQTT + reused TH4 FastAPI/SQLite/HTML dashboard.
 Repository: https://github.com/DanhLent/edge-vibration-monitor (public).
-Current phase: PR #2 merged; teammate write invitations sent; full-duration/browser gates and official TH5 data pending.
+Current phase: PRs #1–#3 merged. Official TH5 received. Teammate write invitations remain pending.
+Public main keeps the reviewed baseline while the TH5 firmware and model are developed and tested on local drafts.
 
 ## Initialization
 - [x] Inspect all seven workbook sheets; isolate N06/E2 and applicable shared rules.
@@ -24,7 +25,7 @@ Current phase: PR #2 merged; teammate write invitations sent; full-duration/brow
 - [ ] Run the firmware in Wokwi and measure actual sensor/sampling/MQTT behavior.
 
 ## Milestone 1 — Week 7 (30%)
-- [ ] Obtain official TH5 data; confirm units, axis, preprocessing, labels, and time order.
+- [x] Verify official simulated TH5 data, including UTC burst ordering and centered X-axis RMS/peak in g.
 - [ ] Confirm distinct project context, calendar deadlines, and measurement conventions.
 - [ ] Document block/wiring diagrams, MQTT topics, both data flows, and target metrics.
 - [ ] Read MPU6050; implement simulation modes and one-second feature windows.
