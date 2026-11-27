@@ -23,7 +23,11 @@ CREATE TABLE IF NOT EXISTS commands(
     updated REAL NOT NULL, result TEXT, last_sent REAL);
 CREATE UNIQUE INDEX IF NOT EXISTS ix_one_pending_command ON commands(device_id) WHERE state='pending';
 """
-FEATURES = ("rms", "peak", "crest_factor")
+FEATURES = {
+    "rms": "rms", "peak": "peak", "crest_factor": "crest_factor",
+    "p1x": "json_extract(payload, '$.spectrum.p1x')",
+    "p2x": "json_extract(payload, '$.spectrum.p2x')",
+}
 
 
 class DB:
@@ -135,10 +139,13 @@ class DB:
 
     def history(self, device_id, start, end, field="rms", limit=5000):
         if field not in FEATURES:
-            raise ValueError("field must be rms, peak, or crest_factor")
+            raise ValueError("field must be rms, peak, crest_factor, p1x, or p2x")
+        expression = FEATURES[field]
         with self.lock:
             rows = self.con.execute(
-                f"SELECT received_at AS t,{field} AS v FROM telemetry WHERE device_id=? AND received_at BETWEEN ? AND ? ORDER BY received_at,id LIMIT ?",
+                f"""SELECT received_at AS t,{expression} AS v FROM telemetry
+                WHERE device_id=? AND received_at BETWEEN ? AND ? AND {expression} IS NOT NULL
+                ORDER BY received_at,id LIMIT ?""",
                 (device_id, start, end, limit)).fetchall()
         return [dict(row) for row in rows]
 

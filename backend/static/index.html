@@ -30,10 +30,11 @@ canvas{display:block;width:100%;height:255px;margin-top:14px}pre{white-space:pre
 <section>
 <div class="row spread"><div class="row"><label for="device">Device</label><select id="device"><option value="">Waiting for a device</option></select><span id="connection" class="pill">No telemetry</span></div><span id="broker" class="pill">Connecting to backend</span></div>
 <div class="metrics"><div class="metric"><span>RMS (g)</span><strong id="rms">—</strong></div><div class="metric"><span>Absolute peak (g)</span><strong id="peak">—</strong></div><div class="metric"><span>Crest factor</span><strong id="crest">—</strong></div></div>
+<p id="spectrum" class="muted" hidden></p>
 <p id="sampleInfo" class="muted">Measurements will appear when the device publishes a complete window.</p>
 </section>
 <div class="grid">
-<section><div class="row spread"><h2>Recent measurements</h2><select id="field" aria-label="Chart feature"><option value="rms">RMS</option><option value="peak">Peak</option><option value="crest_factor">Crest factor</option></select></div>
+<section><div class="row spread"><h2>Recent measurements</h2><select id="field" aria-label="Chart feature"><option value="rms">RMS</option><option value="peak">Peak</option><option value="crest_factor">Crest factor</option><option value="p1x">20–30 Hz (g²)</option><option value="p2x">45–55 Hz (g²)</option></select></div>
 <p class="muted">Last five minutes · timestamps recorded by the backend</p><canvas id="chart" width="760" height="255" hidden></canvas><p id="emptyChart" class="muted">No samples yet</p></section>
 <section>
 <h2>Diagnosis</h2><p id="prediction">Model unavailable</p><p id="modelNote" class="muted">The official dataset and trained ESP32 tree are still required.</p>
@@ -67,12 +68,17 @@ function renderDevice() {
   $('rms').textContent = latest ? latest.rms.toFixed(4) : '—';
   $('peak').textContent = latest ? latest.peak.toFixed(4) : '—';
   $('crest').textContent = latest ? latest.crest_factor.toFixed(3) : '—';
+  const spectrum = latest?.spectrum;
+  $('spectrum').hidden = latest?.schema_version !== 2;
+  $('spectrum').textContent = spectrum ? '20–30 Hz: ' + spectrum.p1x.toFixed(6) + ' g² · 45–55 Hz: ' +
+    spectrum.p2x.toFixed(6) + ' g² · FFT runtime: ' + spectrum.fft_us + ' µs' : 'Spectral bands unavailable for this window.';
   const age = latest ? Math.max(0, Date.now()/1000 - latest.received_at).toFixed(1) : '';
   $('sampleInfo').textContent = latest ? latest.sample_count + ' samples · ' + latest.actual_hz.toFixed(1) +
     ' Hz over ' + (latest.window_duration_us/1000000).toFixed(3) + ' s · ' + latest.missed_samples + ' missed timer samples since boot · last measurement received ' + age + ' s ago' :
     'Measurements will appear when the device publishes a complete window.';
   $('prediction').textContent = latest?.model_ready ? labels[latest.prediction] : 'Model unavailable';
-  $('modelNote').textContent = latest?.model_ready ? 'Prediction reported by the ESP32 model.' :
+  $('modelNote').textContent = latest?.model_ready ? (latest.model_variant === 'fft' ?
+    'ESP32 FFT-augmented tree' : 'ESP32 RMS and peak tree') :
     'This device has not reported a trained prediction.';
   $('modeInfo').textContent = device?.source === 'synthetic' ? 'Synthetic signal · current mode: ' + labels[device.mode] :
     device?.source === 'mpu6050' ? 'Physical MPU6050 source; simulation controls are disabled.' : 'No simulation source connected.';
