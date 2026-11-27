@@ -130,4 +130,6 @@ matching binary. Run sequentially when using one device ID. For concurrent runs,
 distinct same-length identifiers with `EVM_DEVICE_ID` and the matching `--device` option. It issues the same three commands at fixed
 device-clock checkpoints and tracks an 82-device-second interval from the normal baseline.
 The raw observer retains only batch headers and byte counts. Compare the reviewed summaries and
+compute the normalized payload ratio with
+`python -m scripts.compare_e2_traffic RAW.json PERIODIC.json EVENT.json` and
 keep private databases, full logs, account files, and raw samples in ignored storage.

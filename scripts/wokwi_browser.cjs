@@ -27,7 +27,6 @@ async function run() {
       if ((await page.evaluate(() => navigator.clipboard.readText())).trim() !== expected) {
         throw new Error('Wokwi diagram readback differs from the supplied file');
       }
-      await page.getByRole('button',{name:'sketch.ino',exact:true}).click();
     }
     await page.locator('.monaco-editor:visible').click();
     await page.keyboard.press('F1');
