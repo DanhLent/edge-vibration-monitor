@@ -20,3 +20,12 @@ AI assisted implementation, regression tests, CI, progressive-disclosure specs, 
 [Danh's bootstrap record](ai/danh.md) records this work. Future entries belong in the individual logs:
 [Nhat](ai/nhat.md) and [Dat](ai/dat.md). These placeholders do not claim contributions by those members.
 See STATE.md for verified results and pending Wokwi/data/model gates.
+
+## Advanced FFT extension
+
+AI assisted the mixed-radix FFT implementation, raw trace replay, locked
+split comparison, C export, spectral telemetry v2, dashboard, and Wokwi
+measurement tools. Danh authored the local reference drafts. Official
+rows and benchmark images containing them remain in ignored storage.
+See the [FFT evidence](../deliverables/measurements/wokwi-fft/README.md)
+for simulator results and verification limits.

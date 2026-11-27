@@ -1,0 +1,89 @@
+{
+  "engine": "Wokwi web",
+  "profile": "traffic",
+  "publish_mode": "event",
+  "binary_sha256": "56a4d17923f69c7c14accd8980576e20d01d28c8257aec65e921836966f8ea4e",
+  "diagram_sha256": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+  "commands": [
+    {
+      "id": "c9fa9661cdd1947",
+      "mode": "normal",
+      "latency_ms": 1891.6969299316406
+    },
+    {
+      "id": "c2eb1fb7718744f",
+      "mode": "imbalance",
+      "latency_ms": 1355.1011085510254
+    },
+    {
+      "id": "cde192de02f1d4d",
+      "mode": "loose",
+      "latency_ms": 1290.0080680847168
+    }
+  ],
+  "result": "PASS",
+  "boot_id": "47a3d790",
+  "timing": {
+    "fft_us_min": 50004,
+    "fft_us_median": 53645.0,
+    "fft_us_max": 54558
+  },
+  "traffic": {
+    "messages_by_topic": {
+      "raw": 0,
+      "telemetry": 3,
+      "status": 17,
+      "cmd": 3,
+      "ack": 3
+    },
+    "payload_bytes_by_topic": {
+      "raw": 0,
+      "telemetry": 1253,
+      "status": 2950,
+      "cmd": 290,
+      "ack": 290
+    },
+    "messages": 26,
+    "payload_bytes": 4783,
+    "unique_raw_batches": 0,
+    "telemetry": [
+      {
+        "window_id": 15,
+        "uptime_ms": 18779,
+        "mode": "imbalance",
+        "prediction": "imbalance",
+        "spectrum": {
+          "p1x": 0.026052,
+          "p2x": 0.000927,
+          "fft_us": 53444
+        },
+        "model_variant": "fft"
+      },
+      {
+        "window_id": 20,
+        "uptime_ms": 24446,
+        "mode": "loose",
+        "prediction": "loose",
+        "spectrum": {
+          "p1x": 0.015062,
+          "p2x": 0.002596,
+          "fft_us": 54555
+        },
+        "model_variant": "fft"
+      },
+      {
+        "window_id": 80,
+        "uptime_ms": 84511,
+        "mode": "loose",
+        "prediction": "loose",
+        "spectrum": {
+          "p1x": 0.015062,
+          "p2x": 0.002596,
+          "fft_us": 53645
+        },
+        "model_variant": "fft"
+      }
+    ]
+  },
+  "device_seconds": 82.437
+}

@@ -9,11 +9,16 @@ The public bootstrap firmware computes one-second RMS, absolute peak, and crest 
 stores unique measurement windows, and provides acknowledged simulation-mode control.
 **The public bootstrap uses the unavailable model stub.** Its predictions are null and its
 diagnosis LEDs remain off. The trained local build uses the private handoffs below. Physical
-validation and FFT remain pending.
+validation remains pending.
 
 The trained local Wokwi integration has reviewed [dashboard](deliverables/dashboard/wokwi-th5/README.md)
 and [circuit and traffic measurements](deliverables/measurements/wokwi-th5-traffic/README.md).
 Those measurements use the offline TH5 firmware and model handoffs.
+
+The local FFT extension preserves the mandatory tree and adds spectral
+telemetry, two band histories, and the active model on the dashboard.
+See [FFT evidence](deliverables/measurements/wokwi-fft/README.md) for live Wokwi
+results and the locked-split evaluation.
 
 ## Start the backend
 

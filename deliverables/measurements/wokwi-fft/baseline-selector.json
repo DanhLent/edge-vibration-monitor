@@ -1,0 +1,44 @@
+{
+  "engine": "Wokwi web",
+  "profile": "circuit",
+  "publish_mode": "event",
+  "binary_sha256": "2eb796ffd7ff18dddd45169d5ebe35bf6f5f7c23e83c04433b139bd8c5e26fba",
+  "diagram_sha256": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+  "commands": [],
+  "result": "PASS",
+  "mode_evidence": {
+    "normal": {
+      "seconds": 2.0,
+      "windows": 3,
+      "rms_g": 0.0949933,
+      "peak_g": 0.2524115,
+      "fft_us_min": 54416,
+      "fft_us_median": 54416,
+      "fft_us_max": 80636,
+      "p1x_g2": 0.007976953,
+      "p2x_g2": 0.000970142
+    },
+    "imbalance": {
+      "seconds": 2.826,
+      "windows": 3,
+      "rms_g": 0.1644701,
+      "peak_g": 0.3503326,
+      "fft_us_min": 54354,
+      "fft_us_median": 54455,
+      "fft_us_max": 54536,
+      "p1x_g2": 0.02605202,
+      "p2x_g2": 0.000926568
+    },
+    "loose": {
+      "seconds": 2.001,
+      "windows": 3,
+      "rms_g": 0.1333063,
+      "peak_g": 0.3262512,
+      "fft_us_min": 49318,
+      "fft_us_median": 50854,
+      "fft_us_max": 53619,
+      "p1x_g2": 0.015062448,
+      "p2x_g2": 0.002595768
+    }
+  }
+}

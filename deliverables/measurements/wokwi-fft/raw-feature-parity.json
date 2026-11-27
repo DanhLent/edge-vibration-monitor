@@ -1,0 +1,12 @@
+{
+  "source_sha256": "5584fdd8b9fea096cbab8bda7ca5d1b44628fda6e66a5aebf0b1aa2af2e7ba38",
+  "windows": 60,
+  "values": 120,
+  "max_absolute_error": 4.5284643951370995e-09,
+  "max_relative_error": 6.69239446196193e-07,
+  "tolerance_relative": 0.001,
+  "vectors_sha256": "c6ee7d8c4d654cfd1ebab387070794988991c34b9c8cf8733a11909aff7173bc",
+  "fft_cpp_sha256": "52b153481be914d2f52f58d15c87ef2f6bfaac9d6fbfb7d66c6d41f9f94736cd",
+  "first_us": 4263,
+  "warm_us_median": 656.0
+}

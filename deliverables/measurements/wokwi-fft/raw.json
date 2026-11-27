@@ -1,0 +1,53 @@
+{
+  "engine": "Wokwi web",
+  "profile": "traffic",
+  "publish_mode": "raw",
+  "binary_sha256": "391e384bcfa56744af81344ddfd378022d21dda112aff5ee29190a4f4ab9111c",
+  "diagram_sha256": "0c1d24b9c7022073dc2a6755804c932662a2128b59f6fc364ddef52541605a25",
+  "commands": [
+    {
+      "id": "c69d621de677e4a",
+      "mode": "normal",
+      "latency_ms": 1453.3898830413818
+    },
+    {
+      "id": "c4a3feb5107ec49",
+      "mode": "imbalance",
+      "latency_ms": 2966.7389392852783
+    },
+    {
+      "id": "c43876e3c49ff47",
+      "mode": "loose",
+      "latency_ms": 2503.2098293304443
+    }
+  ],
+  "result": "PASS",
+  "boot_id": "8948bee1",
+  "timing": {
+    "fft_us_min": 47645,
+    "fft_us_median": 53102,
+    "fft_us_max": 54543
+  },
+  "traffic": {
+    "messages_by_topic": {
+      "raw": 309,
+      "telemetry": 0,
+      "status": 17,
+      "cmd": 5,
+      "ack": 5
+    },
+    "payload_bytes_by_topic": {
+      "raw": 159753,
+      "telemetry": 0,
+      "status": 2950,
+      "cmd": 487,
+      "ack": 487
+    },
+    "messages": 336,
+    "payload_bytes": 163677,
+    "unique_raw_batches": 309,
+    "telemetry": [],
+    "raw_batch_coverage": 0.965625
+  },
+  "device_seconds": 82.663
+}

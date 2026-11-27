@@ -93,12 +93,13 @@ function drawChart(points) {
   canvas.hidden = !points.length;
   $('emptyChart').hidden = !!points.length;
   if (!points.length) return;
-  const g = canvas.getContext('2d'), w = canvas.width, h = canvas.height, pad = 35;
+  const g = canvas.getContext('2d'), w = canvas.width, h = canvas.height;
+  const spectral = ['p1x','p2x'].includes($('field').value), pad = spectral ? 54 : 35;
   g.clearRect(0,0,w,h);
   const now = Date.now()/1000, maximum = Math.max(.001,...points.map(p=>p.v))*1.15;
   const x = t=>pad+(t-(now-300))/300*(w-pad-10), y = v=>h-pad-v/maximum*(h-pad-12);
   g.font='11px system-ui';g.fillStyle='#637286';g.strokeStyle='#e3e9f0';
-  for(let i=0;i<=4;i++){const value=maximum*i/4;g.beginPath();g.moveTo(pad,y(value));g.lineTo(w-10,y(value));g.stroke();g.fillText(value.toFixed(2),0,y(value)+4);}
+  for(let i=0;i<=4;i++){const value=maximum*i/4;g.beginPath();g.moveTo(pad,y(value));g.lineTo(w-10,y(value));g.stroke();g.fillText(value.toFixed(spectral ? 6 : 2),0,y(value)+4);}
   g.strokeStyle='#2458a6';g.lineWidth=2;g.beginPath();
   points.forEach((point,i)=>i?g.lineTo(x(point.t),y(point.v)):g.moveTo(x(point.t),y(point.v)));g.stroke();
   g.fillStyle='#2458a6';
